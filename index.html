@@ -153,11 +153,11 @@ html,body{
   <div class="header">
     <div class="titleRow">
       <div class="titleIcon">
-        <img src="om 2.png" alt="Om" id="omIconLeft">
+        <img src="Om 1.jpeg" alt="Om" id="omIconLeft">
       </div>
       <div class="title">Arora Family Calendar</div>
       <div class="titleIcon">
-        <img src="om 2.png" alt="Om" id="omIconRight">
+        <img src="Om 1.jpeg" alt="Om" id="omIconRight">
       </div>
     </div>
     <div class="dt">
@@ -169,19 +169,9 @@ html,body{
   <div class="main">
     <div class="left">
 
-      <!-- Google Photos Album Embed -->
-      <div class="card albumFrame">
-        <div class="pa-gallery-player-widget" style="width:100%; height:260px; display:none;"
-          data-link="https://photos.app.goo.gl/otWcjpGaxr4pREjc8"
-          data-title="Niya and Jaiden · May 2, 2006 – Jan 19, 2026 📸"
-          data-description="Shared album · Tap to view!">
-          <object data="https://lh3.googleusercontent.com/pw/AP1GczMFOZiZY5KWQ0C4v_fWvoR426w-Ng62oW-6FdufWtkhTlqdsuKafakw8HDu2JfsMkmyDEIGMGWuIvte0b6ug8CFRo_AKocvBkCCNGSeOt8Kru8PQBIe=w1920-h1080"></object>
-          <object data="https://lh3.googleusercontent.com/pw/AP1GczPbpkO8cblmAmozt0Ltf9-Tuwdm9u_H-Qs1rcRaQMP5eZVz-PiIJvWhOtlw_UHkGbaVLMaoWR1UG4KhghxJtbhY-NgJ931Zl4ym9i6c70CPPbKWbelQ=w1920-h1080"></object>
-          <object data="https://lh3.googleusercontent.com/pw/AP1GczOw8rp5nMwHPy5HLTFjjdrepp4VV_1pZM1NU4l0GqrnlTznFxodpK7_Y9qckJP_Ri7Ln7zUQxAFpp0RYED19Tmtu39AVwtPSFEyTeq2hsvHPykpiJLw=w1920-h1080"></object>
-          <object data="https://lh3.googleusercontent.com/pw/AP1GczMRFjpACkHORYLnJJ9loz4pK6ylRWYE83dPZYiWXOo5SYwfhY3yqxJsX8kAeAGayUFatTK9aPaSehfW1sg98ajMryGtNhV3wVsjDDP6D1FD6MDqkz1h=w1920-h1080"></object>
-          <object data="https://lh3.googleusercontent.com/pw/AP1GczMrtmdZ3RInAI5viTGOOdFbiBNqMmdP3eYr4ZQRvfhTqGn-x9xtYciFPKQlacNTaWeUmyZ_rntwYs5-fuQ_0uKmOzQDyYlPmoN0gdqpaXeTBZuhI8bP=w1920-h1080"></object>
-          <object data="https://lh3.googleusercontent.com/pw/AP1GczN8AEHTVEkTNfOCc7WgMCFDQkqMyUGADwMdSz_Ks7SWCntJio0XG98ZJibZoTH3D6PBo639KSNSyw6j66SgYof5Pv6zYXDxrSZkY0YrMbZF_GoNqXVN=w1920-h1080"></object>
-        </div>
+      <!-- Family Photo -->
+      <div class="card photoBox">
+        <img src="Family 1.jpeg" alt="Arora Family" style="width:100%;height:100%;object-fit:cover;">
       </div>
 
       <div class="card" id="weather">
@@ -209,7 +199,7 @@ html,body{
 
 <!-- Version timestamp -->
 <div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#666;">
-  v2025-01-25 12:55 PM
+  v2025-01-25 1:12 PM
 </div>
 
 <script>
@@ -223,7 +213,7 @@ setInterval(tick,1000); tick();
 
 /* === WEATHER (SVG + °F) === */
 function iconSVG(kind){
-  const base = (paths)=>`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">${paths}</svg>`;
+  const base = (content, useStroke = true)=>`<svg viewBox="0 0 64 64" fill="none" ${useStroke ? 'stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"' : ''} xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
   switch(kind){
     case "sun": return base(`
       <circle cx="32" cy="32" r="10"/>
@@ -248,9 +238,7 @@ function iconSVG(kind){
       <line x1="29" y1="15" x2="33" y2="11"/>
       <path d="M22 44h24c5.5 0 10-4.5 10-10s-4.5-10-10-10c-1 0-2 .2-2.9.5C41.5 18.5 36 14 30 14c-7.2 0-13 5.8-13 13 0 .7.1 1.4.2 2C12.3 30.2 10 33.8 10 38c0 5.5 4.5 10 10 10h2"/>
     `);
-    case "cloud": return base(`
-      <path d="M18 46h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 16.6 34.8 12 28 12c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 32.2 4 36.8 4 42c0 6.6 5.4 12 12 12"/>
-    `);
+    case "cloud": return `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><ellipse cx="32" cy="26" rx="14" ry="11" fill="white"/><ellipse cx="18" cy="33" rx="10" ry="9" fill="white"/><ellipse cx="46" cy="33" rx="10" ry="9" fill="white"/><rect x="8" y="28" width="48" height="12" fill="white"/></svg>`;
     case "fog": return base(`
       <path d="M18 34h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 4.6 34.8 0 28 0c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 20.2 4 24.8 4 30c0 6.6 5.4 12 12 12h2"/>
       <line x1="14" y1="42" x2="50" y2="42"/>
