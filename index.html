@@ -106,16 +106,12 @@ html,body{
   margin-top:8px;
 }
 .wxIcon{ 
-  width:44px; 
-  height:44px;
-}
-.wxIcon svg{
-  width:100%;
-  height:100%;
-  display:block;
+  font-size:44px;
+  line-height:1;
 }
 .wxTemp{ font-size:28px; font-weight:800; }
 .wxCond{ font-size:14px; opacity:.85; }
+.wxRange{ font-size:13px; opacity:.85; margin-top:4px; }
 .forecastRow{
   margin-top:10px;
   display:flex;
@@ -133,15 +129,7 @@ html,body{
   min-width:0;
 }
 .dow{ font-weight:800; font-size:13px; opacity:.95; }
-.miniIcon{ 
-  width:28px; 
-  height:28px;
-}
-.miniIcon svg{
-  width:100%;
-  height:100%;
-  display:block;
-}
+.dayIcon{ font-size:28px; line-height:1; }
 .temps{ font-size:13px; opacity:.9; white-space:nowrap; }
 .smallCond{ font-size:11px; opacity:.75; text-align:center; }
 </style>
@@ -181,7 +169,7 @@ html,body{
           <div>
             <div class="wxTemp" id="wxTemp">--°F</div>
             <div class="wxCond" id="wxCond">Loading…</div>
-            <div class="wxRange" id="wxRange" style="font-size:13px;opacity:.85;margin-top:4px;"></div>
+            <div class="wxRange" id="wxRange"></div>
           </div>
         </div>
         <div style="margin-top:12px;font-size:13px;font-weight:700;opacity:.9;">5-Day Forecast</div>
@@ -199,7 +187,7 @@ html,body{
 
 <!-- Version timestamp -->
 <div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#666;">
-  v2025-01-25 1:12 PM
+  v2025-01-25 1:30 PM
 </div>
 
 <script>
@@ -211,152 +199,127 @@ function tick(){
 }
 setInterval(tick,1000); tick();
 
-/* === WEATHER (SVG + °F) === */
-function iconSVG(kind){
-  const base = (content, useStroke = true)=>`<svg viewBox="0 0 64 64" fill="none" ${useStroke ? 'stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"' : ''} xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
-  switch(kind){
-    case "sun": return base(`
-      <circle cx="32" cy="32" r="10"/>
-      <line x1="32" y1="6" x2="32" y2="14"/>
-      <line x1="32" y1="50" x2="32" y2="58"/>
-      <line x1="6" y1="32" x2="14" y2="32"/>
-      <line x1="50" y1="32" x2="58" y2="32"/>
-      <line x1="12" y1="12" x2="18" y2="18"/>
-      <line x1="46" y1="46" x2="52" y2="52"/>
-      <line x1="12" y1="52" x2="18" y2="46"/>
-      <line x1="46" y1="18" x2="52" y2="12"/>
-    `);
-    case "partly": return base(`
-      <circle cx="22" cy="22" r="8"/>
-      <line x1="22" y1="6" x2="22" y2="12"/>
-      <line x1="22" y1="32" x2="22" y2="38"/>
-      <line x1="6" y1="22" x2="12" y2="22"/>
-      <line x1="32" y1="22" x2="38" y2="22"/>
-      <line x1="11" y1="11" x2="15" y2="15"/>
-      <line x1="29" y1="29" x2="33" y2="33"/>
-      <line x1="11" y1="33" x2="15" y2="29"/>
-      <line x1="29" y1="15" x2="33" y2="11"/>
-      <path d="M22 44h24c5.5 0 10-4.5 10-10s-4.5-10-10-10c-1 0-2 .2-2.9.5C41.5 18.5 36 14 30 14c-7.2 0-13 5.8-13 13 0 .7.1 1.4.2 2C12.3 30.2 10 33.8 10 38c0 5.5 4.5 10 10 10h2"/>
-    `);
-    case "cloud": return `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><ellipse cx="32" cy="26" rx="14" ry="11" fill="white"/><ellipse cx="18" cy="33" rx="10" ry="9" fill="white"/><ellipse cx="46" cy="33" rx="10" ry="9" fill="white"/><rect x="8" y="28" width="48" height="12" fill="white"/></svg>`;
-    case "fog": return base(`
-      <path d="M18 34h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 4.6 34.8 0 28 0c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 20.2 4 24.8 4 30c0 6.6 5.4 12 12 12h2"/>
-      <line x1="14" y1="42" x2="50" y2="42"/>
-      <line x1="18" y1="48" x2="46" y2="48"/>
-      <line x1="14" y1="54" x2="50" y2="54"/>
-    `);
-    case "drizzle": return base(`
-      <path d="M18 38h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 8.6 34.8 4 28 4c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 24.2 4 28.8 4 34c0 6.6 5.4 12 12 12h2"/>
-      <line x1="22" y1="44" x2="22" y2="48"/>
-      <line x1="32" y1="44" x2="32" y2="48"/>
-      <line x1="42" y1="44" x2="42" y2="48"/>
-    `);
-    case "rain": return base(`
-      <path d="M18 36h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 6.6 34.8 2 28 2c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 22.2 4 26.8 4 32c0 6.6 5.4 12 12 12h2"/>
-      <line x1="22" y1="42" x2="20" y2="48"/>
-      <line x1="32" y1="42" x2="30" y2="48"/>
-      <line x1="42" y1="42" x2="40" y2="48"/>
-    `);
-    case "sleet": return base(`
-      <path d="M18 34h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 4.6 34.8 0 28 0c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 20.2 4 24.8 4 30c0 6.6 5.4 12 12 12h2"/>
-      <line x1="24" y1="40" x2="22" y2="46"/>
-      <line x1="40" y1="40" x2="38" y2="46"/>
-      <line x1="32" y1="40" x2="32" y2="48"/>
-      <line x1="28.5" y1="44.5" x2="35.5" y2="44.5"/>
-      <line x1="29.5" y1="41.5" x2="34.5" y2="46.5"/>
-      <line x1="34.5" y1="41.5" x2="29.5" y2="46.5"/>
-    `);
-    case "snow": return base(`
-      <path d="M18 34h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 4.6 34.8 0 28 0c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 20.2 4 24.8 4 30c0 6.6 5.4 12 12 12h2"/>
-      <line x1="24" y1="42" x2="24" y2="52"/>
-      <line x1="20" y1="47" x2="28" y2="47"/>
-      <line x1="21.5" y1="43.5" x2="26.5" y2="48.5"/>
-      <line x1="26.5" y1="43.5" x2="21.5" y2="48.5"/>
-      <line x1="40" y1="42" x2="40" y2="52"/>
-      <line x1="36" y1="47" x2="44" y2="47"/>
-      <line x1="37.5" y1="43.5" x2="42.5" y2="48.5"/>
-      <line x1="42.5" y1="43.5" x2="37.5" y2="48.5"/>
-    `);
-    case "hail": return base(`
-      <path d="M18 32h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 2.6 34.8-2 28-2c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 18.2 4 22.8 4 28c0 6.6 5.4 12 12 12h2"/>
-      <circle cx="24" cy="42" r="2"/>
-      <circle cx="32" cy="46" r="2"/>
-      <circle cx="40" cy="42" r="2"/>
-      <circle cx="28" cy="52" r="2"/>
-      <circle cx="36" cy="52" r="2"/>
-    `);
-    case "storm": return base(`
-      <path d="M18 34h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 4.6 34.8 0 28 0c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 20.2 4 24.8 4 30c0 6.6 5.4 12 12 12h2"/>
-      <path d="M30 38l-6 10h8l-4 10 12-16h-8l4-4z"/>
-      <line x1="44" y1="44" x2="42" y2="50"/>
-    `);
-    case "windy": return base(`
-      <path d="M14 28h26c3 0 5-2 5-5s-2-5-5-5c-2.8 0-4.2 2-4 4"/>
-      <path d="M14 38h34c3.9 0 7-3.1 7-7s-3.1-7-7-7c-3.8 0-6 3-6 6"/>
-      <path d="M14 48h22c3 0 5-2 5-5s-2-4-4-4"/>
-    `);
-    default: return base(`<circle cx="32" cy="32" r="20"/>`);
+/* === WEATHER (Using National Weather Service API + Weather Emojis) === */
+// ZIP 77055 coordinates
+const LAT = 29.7853;
+const LON = -95.5204;
+
+// Weather condition to emoji mapping
+function getWeatherEmoji(text) {
+  const t = text.toLowerCase();
+  
+  // Thunderstorms
+  if(t.includes('thunder') || t.includes('t-storm')) return '⛈️';
+  
+  // Rain variations
+  if(t.includes('rain') && t.includes('heavy')) return '🌧️';
+  if(t.includes('rain') || t.includes('shower')) return '🌦️';
+  if(t.includes('drizzle')) return '🌦️';
+  
+  // Snow variations
+  if(t.includes('snow') || t.includes('flurries')) return '🌨️';
+  if(t.includes('sleet') || t.includes('wintry mix')) return '🌨️';
+  
+  // Fog and mist
+  if(t.includes('fog') || t.includes('mist')) return '🌫️';
+  
+  // Wind
+  if(t.includes('wind')) return '💨';
+  
+  // Cloud variations
+  if(t.includes('partly cloudy') || t.includes('partly sunny')) return '⛅';
+  if(t.includes('mostly cloudy') || t.includes('cloudy')) return '☁️';
+  if(t.includes('overcast')) return '☁️';
+  
+  // Clear/Sunny
+  if(t.includes('sunny') || t.includes('clear')) return '☀️';
+  if(t.includes('fair')) return '🌤️';
+  
+  // Default
+  return '🌤️';
+}
+
+async function fetchWeather() {
+  try {
+    // Step 1: Get grid coordinates for ZIP 77055
+    const pointRes = await fetch(`https://api.weather.gov/points/${LAT},${LON}`);
+    const pointData = await pointRes.json();
+    
+    // Step 2: Get forecast from grid endpoint
+    const forecastUrl = pointData.properties.forecast;
+    const forecastRes = await fetch(forecastUrl);
+    const forecastData = await forecastRes.json();
+    
+    const periods = forecastData.properties.periods;
+    
+    // Find today's periods (we want the current period)
+    const now = periods[0];
+    
+    // Display current weather
+    wxIcon.textContent = getWeatherEmoji(now.shortForecast);
+    wxTemp.textContent = `${now.temperature}°F`;
+    wxCond.textContent = now.shortForecast;
+    
+    // Get high/low for today
+    let todayHigh = now.temperature;
+    let todayLow = now.temperature;
+    
+    // Check if next period is same day to get both high and low
+    if(periods.length > 1) {
+      const next = periods[1];
+      if(now.isDaytime) {
+        todayLow = next.temperature;
+      } else {
+        todayHigh = next.temperature;
+      }
+    }
+    
+    wxRange.textContent = `High ${todayHigh}° • Low ${todayLow}°`;
+    
+    // Build 5-day forecast (skip today, show next 5 days)
+    let html = "";
+    const seenDays = new Set();
+    let daysAdded = 0;
+    
+    for(let i = 2; i < periods.length && daysAdded < 5; i++) {
+      const p = periods[i];
+      const date = new Date(p.startTime);
+      const dayKey = date.toDateString();
+      
+      // Only show daytime periods and unique days
+      if(p.isDaytime && !seenDays.has(dayKey)) {
+        seenDays.add(dayKey);
+        
+        // Get the night temp (next period after daytime)
+        let lowTemp = p.temperature;
+        if(i + 1 < periods.length) {
+          lowTemp = periods[i + 1].temperature;
+        }
+        
+        html += `<div class="dayCard">
+          <div class="dow">${date.toLocaleDateString([], {weekday:'short'})}</div>
+          <div class="dayIcon">${getWeatherEmoji(p.shortForecast)}</div>
+          <div class="temps">${p.temperature}° / ${lowTemp}°</div>
+          <div class="smallCond">${p.shortForecast}</div>
+        </div>`;
+        
+        daysAdded++;
+      }
+    }
+    
+    forecast.innerHTML = html;
+    
+  } catch(err) {
+    console.error('Weather fetch error:', err);
+    wxTemp.textContent = "--°F";
+    wxCond.textContent = "Unable to load weather";
+    wxIcon.textContent = "🌤️";
   }
 }
 
-function codeToKind(code){
-  // Open-Meteo uses WMO weather codes: https://open-meteo.com/en/docs
-  if(code===0) return ["sun","Clear"];
-  if([1,2].includes(code)) return ["partly","Partly cloudy"];
-  if(code===3) return ["cloud","Overcast"];
-  if([45,48].includes(code)) return ["fog","Fog"];
-  if([51,53,55].includes(code)) return ["drizzle","Drizzle"];
-  if([56,57].includes(code)) return ["sleet","Freezing drizzle"];
-  if([61,63,65].includes(code)) return ["rain","Rain"];
-  if([66,67].includes(code)) return ["sleet","Freezing rain"];
-  if([71,73,75,77,85,86].includes(code)) return ["snow","Snow"];
-  if([80,81,82].includes(code)) return ["rain","Showers"];
-  if(code===95) return ["storm","Thunderstorms"];
-  if([96,99].includes(code)) return ["hail","Thunder + hail"];
-  return ["cloud","Cloudy"];
-}
-
-function localDateFromISO(iso){
-  // Avoid Date("YYYY-MM-DD") which is treated as UTC and can shift the day in local time.
-  const [y,m,d]=iso.split("-").map(Number);
-  return new Date(y, m-1, d);
-}
-
-fetch("https://api.open-meteo.com/v1/forecast?latitude=29.7604&longitude=-95.3698&current=temperature_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America/Chicago")
-.then(r=>r.json())
-.then(d=>{
-  // Current conditions - use TODAY'S data from daily forecast
-  const todayCode = d.daily.weather_code[0];
-  let [kind,label]=codeToKind(todayCode);
-  const wind = d.current.wind_speed_10m ?? 0;
-  if(wind >= 25 && [0,1,2,3].includes(todayCode)){
-    kind="windy"; label=`Windy`;
-  }
-
-  wxTemp.textContent=Math.round(d.current.temperature_2m)+"°F";
-  wxCond.textContent = wind >= 25 ? `${label} • ${Math.round(wind)} mph` : label;
-  wxRange.textContent = `High ${Math.round(d.daily.temperature_2m_max[0])}° • Low ${Math.round(d.daily.temperature_2m_min[0])}°`;
-  wxIcon.innerHTML = iconSVG(kind);
-
-  // 5-day forecast: tomorrow through day 5 (skip today since it's shown above)
-  let html="";
-  for(let i=1;i<=5;i++){
-    const dt = localDateFromISO(d.daily.time[i]);
-    const [k,l]=codeToKind(d.daily.weather_code[i]);
-    html+=`<div class="dayCard">
-      <div class="dow">${dt.toLocaleDateString([], {weekday:'short'})}</div>
-      <div class="miniIcon">${iconSVG(k)}</div>
-      <div class="temps">${Math.round(d.daily.temperature_2m_max[i])}° / ${Math.round(d.daily.temperature_2m_min[i])}°</div>
-      <div class="smallCond">${l}</div>
-    </div>`;
-  }
-  forecast.innerHTML=html;
-})
-.catch(err=>{
-  console.error('Weather fetch error:', err);
-  wxTemp.textContent="--°F";
-  wxCond.textContent="Unable to load weather";
-});
+fetchWeather();
+// Refresh weather every 30 minutes
+setInterval(fetchWeather, 30 * 60 * 1000);
 </script>
 </body>
 </html>
