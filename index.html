@@ -18,182 +18,239 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
 
 <style>
-html,body{
-  margin:0; 
-  height:100vh;
-  width:100vw;
-  background:#0b0f17; 
-  color:#fff;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  overflow:hidden;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.wrap{
-  height:100vh;
-  width:100vw;
-  padding:clamp(8px, 1vw, 16px);
-  box-sizing:border-box;
-  display:flex;
-  flex-direction:column;
-  gap:clamp(8px, 0.8vh, 12px);
-  overflow:hidden;
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0b0f17;
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
 }
-.header{
-  background:#111827;
-  border-radius:16px;
-  padding:clamp(10px, 1.2vh, 16px) clamp(12px, 1.5vw, 20px);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+
+/* Responsive container optimized for 42" 4K TV but scales for all screens */
+.wrap {
+  width: 100vw;
+  height: 100vh;
+  padding: min(1.5vh, 1.5vw);
+  display: flex;
+  flex-direction: column;
+  gap: min(1.2vh, 1vw);
+  overflow: hidden;
 }
-.headerLeft, .headerRight{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
-  min-width:120px;
+
+.header {
+  background: #111827;
+  border-radius: min(2vh, 1.5vw);
+  padding: min(1.5vh, 1.2vw) min(2vh, 1.8vw);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
 }
-.titleIcon{
-  width:clamp(60px, 6vw, 80px);
-  height:clamp(60px, 6vw, 80px);
+
+.headerLeft, .headerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: min(1vh, 0.8vw);
+  width: min(15vw, 140px);
 }
-.titleIcon img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  filter:brightness(1.1);
+
+.titleIcon {
+  width: min(8vh, 7vw);
+  height: min(8vh, 7vw);
+  max-width: 90px;
+  max-height: 90px;
 }
-.timeDisplay{
-  font-size:clamp(18px, 2vw, 24px);
-  font-weight:700;
-  text-align:center;
+
+.titleIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(1.1);
 }
-.title{
-  text-align:center;
-  font-size:clamp(24px, 3vw, 36px);
-  font-weight:800;
-  font-family:"Fraunces", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  letter-spacing:.2px;
-  flex:1;
+
+.timeDisplay {
+  font-size: min(2.5vh, 2vw);
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
 }
-.main{
-  flex:1;
-  display:grid;
-  grid-template-columns:34% 66%;
-  gap:clamp(8px, 1vw, 14px);
-  min-height:0;
-  overflow:hidden;
+
+.title {
+  text-align: center;
+  font-size: min(4vh, 3.2vw);
+  font-weight: 800;
+  font-family: "Fraunces", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  letter-spacing: 0.2px;
+  flex: 1;
+  padding: 0 min(2vw, 20px);
 }
-.left,.right{
-  min-height:0;
-  overflow:hidden;
+
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 34% 66%;
+  gap: min(1.2vh, 1vw);
+  min-height: 0;
+  overflow: hidden;
 }
-.left{
-  display:flex;
-  flex-direction:column;
-  gap:clamp(8px, 1vh, 12px);
-  height:100%;
+
+.left, .right {
+  min-height: 0;
+  overflow: hidden;
 }
-.card{
-  background:#111827;
-  border-radius:16px;
-  padding:clamp(8px, 1vh, 14px);
-  margin-bottom:0;
-  overflow:hidden;
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: min(1.2vh, 1vw);
+  height: 100%;
 }
-.photoBox{
-  flex-shrink:0;
-  height:clamp(200px, 22vh, 280px);
-  background:#000;
-  border-radius:14px;
-  overflow:hidden;
-  position:relative;
+
+.card {
+  background: #111827;
+  border-radius: min(2vh, 1.5vw);
+  padding: min(1.5vh, 1.2vw);
+  margin-bottom: 0;
+  overflow: hidden;
 }
-.photoBox img{
-  width:100%; 
-  height:100%;
-  object-fit:cover;
+
+.photoBox {
+  flex-shrink: 0;
+  height: min(28vh, 26vw);
+  background: #000;
+  border-radius: min(1.8vh, 1.3vw);
+  overflow: hidden;
+  position: relative;
 }
-.calendar{
-  height:100%;
-  border-radius:16px;
-  overflow:hidden;
+
+.photoBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.calendar iframe{
-  width:100%; 
-  height:100%;
-  border:0;
-  filter:invert(1) hue-rotate(180deg) contrast(1.05);
+
+.calendar {
+  height: 100%;
+  border-radius: min(2vh, 1.5vw);
+  overflow: hidden;
+}
+
+.calendar iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: invert(1) hue-rotate(180deg) contrast(1.05);
 }
 
 /* Weather */
-#weather{
-  flex:1;
-  min-height:0;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
+#weather {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
-.wxNow{
-  display:flex; 
-  align-items:center; 
-  gap:12px;
-  margin-top:8px;
+
+.wxNow {
+  display: flex;
+  align-items: center;
+  gap: min(1.5vh, 1.2vw);
+  margin-top: min(1vh, 0.8vw);
 }
-.wxIcon{ 
-  font-size:clamp(36px, 4vw, 48px);
-  line-height:1;
+
+.wxIcon {
+  font-size: min(5.5vh, 4.5vw);
+  line-height: 1;
 }
-.wxTemp{
-  font-size:clamp(22px, 2.5vw, 32px);
-  font-weight:800;
+
+.wxTemp {
+  font-size: min(3.5vh, 2.8vw);
+  font-weight: 800;
 }
-.wxCond{ 
-  font-size:clamp(12px, 1.2vw, 15px); 
-  opacity:.85; 
+
+.wxCond {
+  font-size: min(1.8vh, 1.4vw);
+  opacity: 0.85;
 }
-.wxRange{ 
-  font-size:clamp(11px, 1.1vw, 14px); 
-  opacity:.85; 
-  margin-top:4px; 
+
+.wxRange {
+  font-size: min(1.6vh, 1.3vw);
+  opacity: 0.85;
+  margin-top: min(0.5vh, 0.4vw);
 }
-.forecastRow{
-  margin-top:clamp(6px, 1vh, 10px);
-  display:flex;
-  gap:clamp(6px, 0.8vw, 10px);
-  flex:1;
-  min-height:0;
+
+.forecastLabel {
+  margin-top: min(1.5vh, 1.2vw);
+  font-size: min(1.8vh, 1.4vw);
+  font-weight: 700;
+  opacity: 0.9;
 }
-.dayCard{
-  flex:1;
-  background:#0f172a;
-  border-radius:12px;
-  padding:clamp(6px, 0.8vh, 10px);
-  display:flex;
-  flex-direction:column;
-  gap:clamp(3px, 0.4vh, 6px);
-  align-items:center;
-  justify-content:center;
-  min-width:0;
+
+.forecastRow {
+  margin-top: min(1.2vh, 1vw);
+  display: flex;
+  gap: min(1vh, 0.8vw);
+  flex: 1;
+  min-height: 0;
 }
-.dow{ 
-  font-weight:800; 
-  font-size:clamp(11px, 1.1vw, 14px); 
-  opacity:.95; 
+
+.dayCard {
+  flex: 1;
+  background: #0f172a;
+  border-radius: min(1.5vh, 1.2vw);
+  padding: min(1vh, 0.8vw);
+  display: flex;
+  flex-direction: column;
+  gap: min(0.6vh, 0.5vw);
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
 }
-.dayIcon{ 
-  font-size:clamp(20px, 2.2vw, 28px); 
-  line-height:1; 
+
+.dow {
+  font-weight: 800;
+  font-size: min(1.7vh, 1.3vw);
+  opacity: 0.95;
 }
-.temps{ 
-  font-size:clamp(11px, 1.1vw, 14px); 
-  opacity:.9; 
-  white-space:nowrap; 
+
+.dayIcon {
+  font-size: min(3vh, 2.4vw);
+  line-height: 1;
 }
-.smallCond{ 
-  font-size:clamp(9px, 0.9vw, 12px); 
-  opacity:.75; 
-  text-align:center;
-  line-height:1.2;
+
+.temps {
+  font-size: min(1.6vh, 1.3vw);
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.smallCond {
+  font-size: min(1.4vh, 1.1vw);
+  opacity: 0.75;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 1024px) or (max-height: 768px) {
+  .wrap {
+    padding: 8px;
+    gap: 8px;
+  }
+  .title {
+    font-size: 20px;
+  }
+  .timeDisplay {
+    font-size: 14px;
+  }
 }
 </style>
 </head>
@@ -228,7 +285,7 @@ html,body{
       </div>
 
       <div class="card" id="weather">
-        <strong style="font-size:clamp(13px, 1.3vw, 16px);">Houston Weather - Today</strong>
+        <strong class="forecastLabel">Houston Weather - Today</strong>
         <div class="wxNow">
           <div id="wxIcon" class="wxIcon"></div>
           <div>
@@ -237,7 +294,7 @@ html,body{
             <div class="wxRange" id="wxRange"></div>
           </div>
         </div>
-        <div style="margin-top:clamp(8px, 1vh, 12px);font-size:clamp(11px, 1.1vw, 14px);font-weight:700;opacity:.9;">5-Day Forecast</div>
+        <div class="forecastLabel">5-Day Forecast</div>
         <div class="forecastRow" id="forecast"></div>
       </div>
     </div>
@@ -252,7 +309,7 @@ html,body{
 
 <!-- Version timestamp -->
 <div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#666;">
-  v2025-01-25 2:15 PM
+  v2025-01-25 2:45 PM
 </div>
 
 <script>
@@ -261,123 +318,92 @@ setTimeout(() => location.reload(), 6 * 60 * 60 * 1000);
 
 /* CLOCK */
 function tick(){
-  const now=new Date();
-  time.textContent=now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
-  date.textContent=now.toLocaleDateString([], {weekday:'long',month:'short',day:'numeric'});
+  const now = new Date();
+  time.textContent = now.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+  date.textContent = now.toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'});
 }
-setInterval(tick,1000); tick();
+setInterval(tick, 1000); 
+tick();
 
-/* === WEATHER (Using weather.gov National Weather Service API) === */
+/* === WEATHER (Using Open-Meteo API for most accurate real-time data) === */
 // ZIP 77055 coordinates (Houston, TX)
 const LAT = 29.7853;
 const LON = -95.5204;
 
 // Weather condition to emoji mapping
-function getWeatherEmoji(text) {
-  const t = text.toLowerCase();
-  
-  // Thunderstorms
-  if(t.includes('thunder') || t.includes('t-storm')) return '⛈️';
-  
-  // Rain variations
-  if(t.includes('rain') && t.includes('heavy')) return '🌧️';
-  if(t.includes('rain') || t.includes('shower')) return '🌦️';
-  if(t.includes('drizzle')) return '🌦️';
-  
-  // Snow variations
-  if(t.includes('snow') || t.includes('flurries')) return '🌨️';
-  if(t.includes('sleet') || t.includes('wintry mix')) return '🌨️';
-  
-  // Fog and mist
-  if(t.includes('fog') || t.includes('mist')) return '🌫️';
-  
-  // Wind
-  if(t.includes('wind') && !t.includes('cloudy')) return '💨';
-  
-  // Cloud variations
-  if(t.includes('partly cloudy') || t.includes('partly sunny')) return '⛅';
-  if(t.includes('mostly cloudy') || t.includes('cloudy')) return '☁️';
-  if(t.includes('overcast')) return '☁️';
-  
-  // Clear/Sunny
-  if(t.includes('sunny') || t.includes('clear')) return '☀️';
-  if(t.includes('fair')) return '🌤️';
-  
-  // Default
+function getWeatherEmoji(code, isDay) {
+  // WMO Weather interpretation codes
+  // https://open-meteo.com/en/docs
+  if (code === 0) return isDay ? '☀️' : '🌙';
+  if ([1, 2].includes(code)) return isDay ? '🌤️' : '🌙';
+  if (code === 3) return '☁️';
+  if ([45, 48].includes(code)) return '🌫️';
+  if ([51, 53, 55, 56, 57].includes(code)) return '🌦️';
+  if ([61, 63, 65, 66, 67].includes(code)) return '🌧️';
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return '🌨️';
+  if ([80, 81, 82].includes(code)) return '🌦️';
+  if ([95, 96, 99].includes(code)) return '⛈️';
   return '🌤️';
+}
+
+function getWeatherDescription(code) {
+  if (code === 0) return 'Clear';
+  if (code === 1) return 'Mostly Clear';
+  if (code === 2) return 'Partly Cloudy';
+  if (code === 3) return 'Overcast';
+  if ([45, 48].includes(code)) return 'Foggy';
+  if ([51, 53, 55].includes(code)) return 'Drizzle';
+  if ([56, 57].includes(code)) return 'Freezing Drizzle';
+  if ([61, 63].includes(code)) return 'Light Rain';
+  if (code === 65) return 'Heavy Rain';
+  if ([66, 67].includes(code)) return 'Freezing Rain';
+  if ([71, 73, 75, 77].includes(code)) return 'Snow';
+  if ([80, 81, 82].includes(code)) return 'Rain Showers';
+  if ([85, 86].includes(code)) return 'Snow Showers';
+  if (code === 95) return 'Thunderstorm';
+  if ([96, 99].includes(code)) return 'Thunderstorm';
+  return 'Clear';
 }
 
 async function fetchWeather() {
   try {
-    // Step 1: Get grid coordinates from weather.gov
-    const pointRes = await fetch(`https://api.weather.gov/points/${LAT},${LON}`);
-    const pointData = await pointRes.json();
+    // Open-Meteo API - uses actual weather station data and multiple national weather services
+    // Most accurate for real-time conditions
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=America/Chicago&forecast_days=7`;
     
-    // Step 2: Get forecast from weather.gov grid endpoint
-    const forecastUrl = pointData.properties.forecast;
-    const forecastRes = await fetch(forecastUrl);
-    const forecastData = await forecastRes.json();
+    const response = await fetch(url);
+    const data = await response.json();
     
-    const periods = forecastData.properties.periods;
+    // Current weather
+    const current = data.current;
+    const today = data.daily;
     
-    // Find today's current period
-    const now = periods[0];
+    wxIcon.textContent = getWeatherEmoji(current.weather_code, current.is_day === 1);
+    wxTemp.textContent = `${Math.round(current.temperature_2m)}°F`;
+    wxCond.textContent = getWeatherDescription(current.weather_code);
+    wxRange.textContent = `High ${Math.round(today.temperature_2m_max[0])}° • Low ${Math.round(today.temperature_2m_min[0])}°`;
     
-    // Display current weather
-    wxIcon.textContent = getWeatherEmoji(now.shortForecast);
-    wxTemp.textContent = `${now.temperature}°F`;
-    wxCond.textContent = now.shortForecast;
-    
-    // Get high/low for today
-    let todayHigh = now.temperature;
-    let todayLow = now.temperature;
-    
-    // Check if next period is same day to get both high and low
-    if(periods.length > 1) {
-      const next = periods[1];
-      if(now.isDaytime) {
-        todayLow = next.temperature;
-      } else {
-        todayHigh = next.temperature;
-      }
-    }
-    
-    wxRange.textContent = `High ${todayHigh}° • Low ${todayLow}°`;
-    
-    // Build 5-day forecast (skip today, show next 5 days)
+    // 5-day forecast (skip today, show next 5 days)
     let html = "";
-    const seenDays = new Set();
-    let daysAdded = 0;
-    
-    for(let i = 2; i < periods.length && daysAdded < 5; i++) {
-      const p = periods[i];
-      const date = new Date(p.startTime);
-      const dayKey = date.toDateString();
+    for (let i = 1; i <= 5; i++) {
+      const date = new Date(today.time[i]);
+      const dayName = date.toLocaleDateString([], {weekday: 'short'});
+      const emoji = getWeatherEmoji(today.weather_code[i], true);
+      const desc = getWeatherDescription(today.weather_code[i]);
+      const high = Math.round(today.temperature_2m_max[i]);
+      const low = Math.round(today.temperature_2m_min[i]);
       
-      // Only show daytime periods and unique days
-      if(p.isDaytime && !seenDays.has(dayKey)) {
-        seenDays.add(dayKey);
-        
-        // Get the night temp (next period after daytime)
-        let lowTemp = p.temperature;
-        if(i + 1 < periods.length) {
-          lowTemp = periods[i + 1].temperature;
-        }
-        
-        html += `<div class="dayCard">
-          <div class="dow">${date.toLocaleDateString([], {weekday:'short'})}</div>
-          <div class="dayIcon">${getWeatherEmoji(p.shortForecast)}</div>
-          <div class="temps">${p.temperature}° / ${lowTemp}°</div>
-          <div class="smallCond">${p.shortForecast}</div>
-        </div>`;
-        
-        daysAdded++;
-      }
+      html += `<div class="dayCard">
+        <div class="dow">${dayName}</div>
+        <div class="dayIcon">${emoji}</div>
+        <div class="temps">${high}° / ${low}°</div>
+        <div class="smallCond">${desc}</div>
+      </div>`;
     }
     
     forecast.innerHTML = html;
     
-  } catch(err) {
+  } catch (err) {
     console.error('Weather fetch error:', err);
     wxTemp.textContent = "--°F";
     wxCond.textContent = "Unable to load weather";
@@ -386,8 +412,8 @@ async function fetchWeather() {
 }
 
 fetchWeather();
-// Refresh weather every 30 minutes
-setInterval(fetchWeather, 30 * 60 * 1000);
+// Refresh weather every 15 minutes for most current data
+setInterval(fetchWeather, 15 * 60 * 1000);
 </script>
 </body>
 </html>
