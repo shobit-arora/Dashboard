@@ -96,7 +96,7 @@ html, body {
 .main {
   flex: 1;
   display: grid;
-  grid-template-columns: 34% 66%;
+  grid-template-columns: 24% 76%;
   gap: min(1.2vh, 1vw);
   min-height: 0;
   overflow: hidden;
@@ -124,7 +124,7 @@ html, body {
 
 .photoBox {
   flex-shrink: 0;
-  height: min(28vh, 26vw);
+  height: min(22vh, 20vw);
   background: #000;
   border-radius: min(1.8vh, 1.3vw);
   overflow: hidden;
@@ -134,7 +134,8 @@ html, body {
 .photoBox img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #000;
 }
 
 .calendar {
@@ -148,6 +149,10 @@ html, body {
   height: 100%;
   border: 0;
   filter: invert(1) hue-rotate(180deg) contrast(1.05);
+  transform: scale(0.85);
+  transform-origin: top left;
+  width: 117.65%;
+  height: 117.65%;
 }
 
 /* Weather */
@@ -217,23 +222,23 @@ html, body {
 
 .dow {
   font-weight: 800;
-  font-size: min(1.7vh, 1.3vw);
+  font-size: min(2.2vh, 1.7vw);
   opacity: 0.95;
 }
 
 .dayIcon {
-  font-size: min(3vh, 2.4vw);
+  font-size: min(4vh, 3.2vw);
   line-height: 1;
 }
 
 .temps {
-  font-size: min(1.6vh, 1.3vw);
+  font-size: min(2vh, 1.6vw);
   opacity: 0.9;
   white-space: nowrap;
 }
 
 .smallCond {
-  font-size: min(1.4vh, 1.1vw);
+  font-size: min(1.8vh, 1.4vw);
   opacity: 0.75;
   text-align: center;
   line-height: 1.2;
@@ -309,7 +314,7 @@ html, body {
 
 <!-- Version timestamp -->
 <div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#666;">
-  v2025-01-25 2:45 PM
+  v2025-01-25 5:50 PM
 </div>
 
 <script>
