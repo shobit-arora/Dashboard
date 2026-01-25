@@ -153,11 +153,11 @@ html,body{
   <div class="header">
     <div class="titleRow">
       <div class="titleIcon">
-        <img src="https://i.imgur.com/YourOmImage.png" alt="Om" id="omIconLeft">
+        <img src="om 2.png" alt="Om" id="omIconLeft">
       </div>
       <div class="title">Arora Family Calendar</div>
       <div class="titleIcon">
-        <img src="https://i.imgur.com/YourOmImage.png" alt="Om" id="omIconRight">
+        <img src="om 2.png" alt="Om" id="omIconRight">
       </div>
     </div>
     <div class="dt">
@@ -169,20 +169,32 @@ html,body{
   <div class="main">
     <div class="left">
 
-      <!-- Rotating family photos -->
-      <div class="card photoBox">
-        <img id="photo" alt="Family photo">
+      <!-- Google Photos Album Embed -->
+      <div class="card albumFrame">
+        <div class="pa-gallery-player-widget" style="width:100%; height:260px; display:none;"
+          data-link="https://photos.app.goo.gl/otWcjpGaxr4pREjc8"
+          data-title="Niya and Jaiden · May 2, 2006 – Jan 19, 2026 📸"
+          data-description="Shared album · Tap to view!">
+          <object data="https://lh3.googleusercontent.com/pw/AP1GczMFOZiZY5KWQ0C4v_fWvoR426w-Ng62oW-6FdufWtkhTlqdsuKafakw8HDu2JfsMkmyDEIGMGWuIvte0b6ug8CFRo_AKocvBkCCNGSeOt8Kru8PQBIe=w1920-h1080"></object>
+          <object data="https://lh3.googleusercontent.com/pw/AP1GczPbpkO8cblmAmozt0Ltf9-Tuwdm9u_H-Qs1rcRaQMP5eZVz-PiIJvWhOtlw_UHkGbaVLMaoWR1UG4KhghxJtbhY-NgJ931Zl4ym9i6c70CPPbKWbelQ=w1920-h1080"></object>
+          <object data="https://lh3.googleusercontent.com/pw/AP1GczOw8rp5nMwHPy5HLTFjjdrepp4VV_1pZM1NU4l0GqrnlTznFxodpK7_Y9qckJP_Ri7Ln7zUQxAFpp0RYED19Tmtu39AVwtPSFEyTeq2hsvHPykpiJLw=w1920-h1080"></object>
+          <object data="https://lh3.googleusercontent.com/pw/AP1GczMRFjpACkHORYLnJJ9loz4pK6ylRWYE83dPZYiWXOo5SYwfhY3yqxJsX8kAeAGayUFatTK9aPaSehfW1sg98ajMryGtNhV3wVsjDDP6D1FD6MDqkz1h=w1920-h1080"></object>
+          <object data="https://lh3.googleusercontent.com/pw/AP1GczMrtmdZ3RInAI5viTGOOdFbiBNqMmdP3eYr4ZQRvfhTqGn-x9xtYciFPKQlacNTaWeUmyZ_rntwYs5-fuQ_0uKmOzQDyYlPmoN0gdqpaXeTBZuhI8bP=w1920-h1080"></object>
+          <object data="https://lh3.googleusercontent.com/pw/AP1GczN8AEHTVEkTNfOCc7WgMCFDQkqMyUGADwMdSz_Ks7SWCntJio0XG98ZJibZoTH3D6PBo639KSNSyw6j66SgYof5Pv6zYXDxrSZkY0YrMbZF_GoNqXVN=w1920-h1080"></object>
+        </div>
       </div>
 
       <div class="card" id="weather">
-        <strong>Houston Weather</strong>
+        <strong>Houston Weather - Today</strong>
         <div class="wxNow">
           <div id="wxIcon" class="wxIcon"></div>
           <div>
             <div class="wxTemp" id="wxTemp">--°F</div>
             <div class="wxCond" id="wxCond">Loading…</div>
+            <div class="wxRange" id="wxRange" style="font-size:13px;opacity:.85;margin-top:4px;"></div>
           </div>
         </div>
+        <div style="margin-top:12px;font-size:13px;font-weight:700;opacity:.9;">5-Day Forecast</div>
         <div class="forecastRow" id="forecast"></div>
       </div>
     </div>
@@ -195,6 +207,11 @@ html,body{
   </div>
 </div>
 
+<!-- Version timestamp -->
+<div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#666;">
+  v2025-01-25 12:55 PM
+</div>
+
 <script>
 /* CLOCK */
 function tick(){
@@ -203,30 +220,6 @@ function tick(){
   date.textContent=now.toLocaleDateString([], {weekday:'long',month:'short',day:'numeric'});
 }
 setInterval(tick,1000); tick();
-
-/* PHOTOS ROTATION */
-const PHOTOS = [
-  "https://lh3.googleusercontent.com/pw/AP1GczMFOZiZY5KWQ0C4v_fWvoR426w-Ng62oW-6FdufWtkhTlqdsuKafakw8HDu2JfsMkmyDEIGMGWuIvte0b6ug8CFRo_AKocvBkCCNGSeOt8Kru8PQBIe=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczPbpkO8cblmAmozt0Ltf9-Tuwdm9u_H-Qs1rcRaQMP5eZVz-PiIJvWhOtlw_UHkGbaVLMaoWR1UG4KhghxJtbhY-NgJ931Zl4ym9i6c70CPPbKWbelQ=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczOw8rp5nMwHPy5HLTFjjdrepp4VV_1pZM1NU4l0GqrnlTznFxodpK7_Y9qckJP_Ri7Ln7zUQxAFpp0RYED19Tmtu39AVwtPSFEyTeq2hsvHPykpiJLw=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczMRFjpACkHORYLnJJ9loz4pK6ylRWYE83dPZYiWXOo5SYwfhY3yqxJsX8kAeAGayUFatTK9aPaSehfW1sg98ajMryGtNhV3wVsjDDP6D1FD6MDqkz1h=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczMrtmdZ3RInAI5viTGOOdFbiBNqMmdP3eYr4ZQRvfhTqGn-x9xtYciFPKQlacNTaWeUmyZ_rntwYs5-fuQ_0uKmOzQDyYlPmoN0gdqpaXeTBZuhI8bP=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczN8AEHTVEkTNfOCc7WgMCFDQkqMyUGADwMdSz_Ks7SWCntJio0XG98ZJibZoTH3D6PBo639KSNSyw6j66SgYof5Pv6zYXDxrSZkY0YrMbZF_GoNqXVN=w1920-h1080"
-];
-
-let p=0;
-const img=document.getElementById('photo');
-
-function showNext(){
-  const url=PHOTOS[p % PHOTOS.length];
-  const pre=new Image();
-  pre.onload=()=>img.src=url;
-  pre.onerror=()=>{};
-  pre.src=url;
-  p++;
-}
-showNext();
-setInterval(showNext,8000);
 
 /* === WEATHER (SVG + °F) === */
 function iconSVG(kind){
@@ -256,7 +249,7 @@ function iconSVG(kind){
       <path d="M22 44h24c5.5 0 10-4.5 10-10s-4.5-10-10-10c-1 0-2 .2-2.9.5C41.5 18.5 36 14 30 14c-7.2 0-13 5.8-13 13 0 .7.1 1.4.2 2C12.3 30.2 10 33.8 10 38c0 5.5 4.5 10 10 10h2"/>
     `);
     case "cloud": return base(`
-      <path d="M18 46h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 16.6 34.8 12 28 12c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 32.2 4 36.8 4 42c0 6.6 5.4 12 12 12h2"/>
+      <path d="M18 46h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 16.6 34.8 12 28 12c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 32.2 4 36.8 4 42c0 6.6 5.4 12 12 12"/>
     `);
     case "fog": return base(`
       <path d="M18 34h28c6.6 0 12-5.4 12-12s-5.4-12-12-12c-1.2 0-2.4.2-3.5.6C40.8 4.6 34.8 0 28 0c-8.8 0-16 7.2-16 16 0 .8.1 1.6.2 2.4C6.8 20.2 4 24.8 4 30c0 6.6 5.4 12 12 12h2"/>
@@ -344,20 +337,22 @@ function localDateFromISO(iso){
 fetch("https://api.open-meteo.com/v1/forecast?latitude=29.7604&longitude=-95.3698&current=temperature_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America/Chicago")
 .then(r=>r.json())
 .then(d=>{
-  // Current conditions
-  let [kind,label]=codeToKind(d.current.weather_code);
+  // Current conditions - use TODAY'S data from daily forecast
+  const todayCode = d.daily.weather_code[0];
+  let [kind,label]=codeToKind(todayCode);
   const wind = d.current.wind_speed_10m ?? 0;
-  if(wind >= 25 && [0,1,2,3].includes(d.current.weather_code)){
+  if(wind >= 25 && [0,1,2,3].includes(todayCode)){
     kind="windy"; label=`Windy`;
   }
 
   wxTemp.textContent=Math.round(d.current.temperature_2m)+"°F";
   wxCond.textContent = wind >= 25 ? `${label} • ${Math.round(wind)} mph` : label;
+  wxRange.textContent = `High ${Math.round(d.daily.temperature_2m_max[0])}° • Low ${Math.round(d.daily.temperature_2m_min[0])}°`;
   wxIcon.innerHTML = iconSVG(kind);
 
-  // 5-day forecast: today + next 4
+  // 5-day forecast: tomorrow through day 5 (skip today since it's shown above)
   let html="";
-  for(let i=0;i<5;i++){
+  for(let i=1;i<=5;i++){
     const dt = localDateFromISO(d.daily.time[i]);
     const [k,l]=codeToKind(d.daily.weather_code[i]);
     html+=`<div class="dayCard">
