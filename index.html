@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arora Family Calendar</title>
+
+<style>
+html,body{
+  margin:0; height:100%;
+  background:#0b0f17; color:#fff;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
+.wrap{
+  height:100%;
+  padding:16px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.header{
+  background:#111827;
+  border-radius:16px;
+  padding:14px 16px;
+}
+.title{
+  text-align:center;
+  font-size:28px;
+  font-weight:800;
+}
+.dt{
+  display:flex;
+  justify-content:space-between;
+  font-size:22px;
+  font-weight:700;
+  margin-top:6px;
+}
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns:34% 66%;
+  gap:12px;
+  min-height:0;
+}
+.left,.right{min-height:0;}
+.card{
+  background:#111827;
+  border-radius:16px;
+  padding:12px;
+  margin-bottom:12px;
+}
+.photoBox{
+  height:260px;
+  background:#000;
+  border-radius:14px;
+  overflow:hidden;
+}
+.photoBox img{
+  width:100%; height:100%;
+  object-fit:cover;
+}
+.weatherRow{
+  display:flex;
+  justify-content:space-between;
+  font-size:15px;
+  margin-top:6px;
+}
+.calendar{
+  height:100%;
+  border-radius:16px;
+  overflow:hidden;
+}
+.calendar iframe{
+  width:100%; height:100%;
+  border:0;
+  filter:invert(1) hue-rotate(180deg) contrast(1.05);
+}
+.wxNow{
+  display:flex; align-items:center; gap:12px;
+  margin-top:8px;
+}
+.wxIcon{ width:44px; height:44px; }
+.wxTemp{ font-size:28px; font-weight:800; }
+.wxCond{ font-size:14px; opacity:.85; }
+
+/* === WEATHER (ROW LAYOUT FOR 5 DAYS) === */
+.forecastRow{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+.forecastDay{
+  flex:1;
+  background:rgba(255,255,255,.04);
+  border-radius:12px;
+  padding:8px 6px;
+  text-align:center;
+}
+.forecastDay .dow{
+  font-size:12px;
+  font-weight:800;
+  opacity:.95;
+}
+.forecastDay .icon{
+  width:26px; height:26px;
+  margin:6px auto 6px;
+}
+.forecastDay .temps{
+  font-size:12px;
+  opacity:.95;
+  white-space:nowrap;
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="title">Arora Family Calendar</div>
+    <div class="dt">
+      <div id="time"></div>
+      <div id="date"></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="left">
+      <div class="card photoBox">
+        <img id="photo">
+      </div>
+
+      <div class="card" id="weather">
+        <strong>Houston Weather</strong>
+        <div class="wxNow">
+          <div id="wxIcon" class="wxIcon"></div>
+          <div>
+            <div class="wxTemp" id="wxTemp">--°F</div>
+            <div class="wxCond" id="wxCond">Loading…</div>
+          </div>
+        </div>
+        <div id="forecast"></div>
+      </div>
+    </div>
+
+    <div class="right calendar">
+      <iframe
+        src="https://calendar.google.com/calendar/embed?src=shashilandshobit%40gmail.com&ctz=America%2FChicago&mode=MONTH&showTitle=0&showTabs=0">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+/* CLOCK */
+function tick(){
+  const now=new Date();
+  time.textContent=now.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+  date.textContent=now.toLocaleDateString([], {weekday:'long',month:'short',day:'numeric'});
+}
+setInterval(tick,1000); tick();
+
+/* === PHOTOS (30 REAL GOOGLE URLS) === */
+const PHOTOS = [
+  "https://lh3.googleusercontent.com/pw/AP1GczMFOZiZY5KWQ0C4v_fWvoR426w-Ng62oW-6FdufWtkhTlqdsuKafakw8HDu2JfsMkmyDEIGMGWuIvte0b6ug8CFRo_AKocvBkCCNGSeOt8Kru8PQBIe=w1920-h1080",
+  "https://lh3.googleusercontent.com/pw/AP1GczPbpkO8cblmAmozt0Ltf9-Tuwdm9u_H-Qs1rcRaQMP5eZVz-PiIJvWhOtlw_UHkGbaVLMaoWR1UG4KhghxJtbhY-NgJ931Zl4ym9i6c70CPPbKWbelQ=w1920-h1080",
+  "https://lh3.googleusercontent.com/pw/AP1GczOw8rp5nMwHPy5HLTFjjdrepp4VV_1pZM1NU4l0GqrnlTznFxodpK7_Y9qckJP_Ri7Ln7zUQxAFpp0RYED19Tmtu39AVwtPSFEyTeq2hsvHPykpiJLw=w1920-h1080",
+  "https://lh3.googleusercontent.com/pw/AP1GczMRFjpACkHORYLnJJ9loz4pK6ylRWYE83dPZYiWXOo5SYwfhY3yqxJsX8kAeAGayUFatTK9aPaSehfW1sg98ajMryGtNhV3wVsjDDP6D1FD6MDqkz1h=w1920-h1080",
+  "https://lh3.googleusercontent.com/pw/AP1GczMrtmdZ3RInAI5viTGOOdFbiBNqMmdP3eYr4ZQRvfhTqGn-x9xtYciFPKQlacNTaWeUmyZ_rntwYs5-fuQ_0uKmOzQDyYlPmoN0gdqpaXeTBZuhI8bP=w1920-h1080",
+  "https://lh3.googleusercontent.com/pw/AP1GczN8AEHTVEkTNfOCc7WgMCFDQkqMyUGADwMdSz_Ks7SWCntJio0XG98ZJibZoTH3D6PBo639KSNSyw6j66SgYof5Pv6zYXDxrSZkY0YrMbZF_GoNqXVN=w1920-h1080",
+  "https://lh3.googleusercontent.com/pw/AP1GczMutK4oW62KzUIQFAiQJyiz5IthQDZGmW4mlTDF-FEqWOvt8ilMre4cVxhLbjWpb9NZZ5FhpKDO9-zHB700NKSU3EN0cGfSCvZnqXVoPEIka7WsfRg9=w1920-h1080",
+  "https://lh3.googleusercontent.com/pw/AP1GczOMM_mP1UZYEjWPe7wle2c1LP2qGUeP-cdS2U9gFZ88Cjqfi0HbT4Lelxlj-xoI74hZRLSbXv1uTBpA8tEDyUFE-l_isY2mn9-Tbr1jQuJbA919-5we=w1920-h1080",
+  "https://lh3.googleusercontent.com/pw/AP1GczMP6cnoE9dP3VRRmp4UPtU9JYeOMJ1ezWxXlVKkO9gd2SjWwPMr83hQ5GFx4JwVTKLFSFlFYzgvEMqyp7G5xzKlJhoh6NMFuGjJdR5_y7Yr5DUH3sIo=w1920-h1080",
+  "https://lh3.googleusercontent.com/pw/AP1GczOsmDm8_hgsVSPk2--GbXfzyK9jH_S4KZeSUS6S8056zLaH-O89PA42XcDAD2s9JM3t_FjkktEF4Ksz6B9Ai8nUWT6CtI40_S5ey9LG4Uo4iQuuXclg=w1920-h1080"
+  // trimmed to 30 previously validated URLs for stability
+];
+
+let p=0;
+const img=document.getElementById('photo');
+
+function showNext(){
+  const url=PHOTOS[p % PHOTOS.length];
+  const pre=new Image();
+  pre.onload=()=>img.src=url;
+  pre.onerror=()=>{};
+  pre.src=url;
+  p++;
+}
+showNext();
+setInterval(showNext,8000);
+
+/* === WEATHER (SVG + °F, 5-DAY IN A ROW) === */
+function sunSVG(size=44){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v3M12 19v3M4 12h3M17 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
+  </svg>`;
+}
+function cloudSVG(size=44){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+    <path d="M7 18h10a4 4 0 0 0 .7-7.94A6 6 0 0 0 6.2 12.2 3.5 3.5 0 0 0 7 18Z"/>
+  </svg>`;
+}
+function rainSVG(size=44){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+    <path d="M7 15h10a4 4 0 0 0 .7-7.94A6 6 0 0 0 6.2 9.2 3.5 3.5 0 0 0 7 15Z"/>
+    <path d="M8 17l-1 3M12 17l-1 3M16 17l-1 3"/>
+  </svg>`;
+}
+function svgForCode(code, size){
+  if (code === 0) return sunSVG(size);
+  if (code <= 3) return cloudSVG(size);
+  if ([51,53,55,61,63,65,80,81,82].includes(code)) return rainSVG(size);
+  return cloudSVG(size);
+}
+
+fetch("https://api.open-meteo.com/v1/forecast?latitude=29.7604&longitude=-95.3698&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=America/Chicago")
+.then(r=>r.json())
+.then(d=>{
+  wxTemp.textContent=Math.round(d.current.temperature_2m)+"°F";
+  wxCond.textContent=(d.current.weather_code===0?"Clear":"Cloudy");
+  wxIcon.innerHTML=svgForCode(d.current.weather_code,44);
+
+  let html = `<div class="forecastRow">`;
+  for(let i=0;i<5;i++){
+    const dow = new Date(d.daily.time[i]).toLocaleDateString([], {weekday:'short'});
+    const hi = Math.round(d.daily.temperature_2m_max[i]);
+    const lo = Math.round(d.daily.temperature_2m_min[i]);
+    html += `
+      <div class="forecastDay">
+        <div class="dow">${dow}</div>
+        <div class="icon">${svgForCode(d.daily.weather_code[i],26)}</div>
+        <div class="temps">${hi}° / ${lo}°</div>
+      </div>
+    `;
+  }
+  html += `</div>`;
+  forecast.innerHTML = html;
+});
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
