@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Arora Family Calendar</title>
+
+<!-- Reduce indexing (note: does NOT make the site private) -->
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,max-image-preview:none">
+<meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,max-image-preview:none">
+
+<!-- Warm-but-contemporary title font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
 
 <style>
 html,body{
@@ -35,10 +33,23 @@ html,body{
   border-radius:16px;
   padding:14px 16px;
 }
+.titleRow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+}
 .title{
   text-align:center;
-  font-size:28px;
+  font-size:30px;
   font-weight:800;
+  font-family:"Fraunces", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  letter-spacing:.2px;
+}
+.titleIcon{
+  width:26px;
+  height:26px;
+  opacity:.95;
 }
 .dt{
   display:flex;
@@ -66,16 +77,21 @@ html,body{
   background:#000;
   border-radius:14px;
   overflow:hidden;
+  position:relative;
 }
 .photoBox img{
   width:100%; height:100%;
   object-fit:cover;
 }
-.weatherRow{
-  display:flex;
-  justify-content:space-between;
-  font-size:15px;
-  margin-top:6px;
+.photoBox .fallbackNote{
+  position:absolute;
+  inset:auto 10px 10px 10px;
+  font-size:12px;
+  opacity:.75;
+  background:rgba(0,0,0,.35);
+  padding:6px 8px;
+  border-radius:10px;
+  display:none;
 }
 .calendar{
   height:100%;
@@ -87,6 +103,8 @@ html,body{
   border:0;
   filter:invert(1) hue-rotate(180deg) contrast(1.05);
 }
+
+/* Weather */
 .wxNow{
   display:flex; align-items:center; gap:12px;
   margin-top:8px;
@@ -94,42 +112,51 @@ html,body{
 .wxIcon{ width:44px; height:44px; }
 .wxTemp{ font-size:28px; font-weight:800; }
 .wxCond{ font-size:14px; opacity:.85; }
-
-/* === WEATHER (ROW LAYOUT FOR 5 DAYS) === */
 .forecastRow{
-  display:flex;
-  gap:8px;
   margin-top:10px;
+  display:flex;
+  gap:10px;
 }
-.forecastDay{
+.dayCard{
   flex:1;
-  background:rgba(255,255,255,.04);
+  background:#0f172a;
   border-radius:12px;
-  padding:8px 6px;
-  text-align:center;
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  align-items:center;
+  min-width:0;
 }
-.forecastDay .dow{
-  font-size:12px;
-  font-weight:800;
-  opacity:.95;
+.dayName{ font-weight:800; font-size:13px; opacity:.95; }
+.dayIcon{ width:28px; height:28px; }
+.dayTemps{ font-size:13px; opacity:.9; white-space:nowrap; }
+
+/* Google Photos album embed */
+.albumFrame{
+  height:260px;
+  border-radius:14px;
+  overflow:hidden;
 }
-.forecastDay .icon{
-  width:26px; height:26px;
-  margin:6px auto 6px;
-}
-.forecastDay .temps{
-  font-size:12px;
-  opacity:.95;
-  white-space:nowrap;
+.pa-gallery-player-widget{
+  width:100%;
+  height:260px;
 }
 </style>
+
+<!-- Google Photos "publicalbum" embed -->
+<script src="https://cdn.jsdelivr.net/npm/publicalbum@latest/embed-ui.min.js" async></script>
 </head>
 
 <body>
 <div class="wrap">
 
   <div class="header">
-    <div class="title">Arora Family Calendar</div>
+    <div class="titleRow">
+      <div class="titleIcon" aria-hidden="true" id="ganeshIcon"></div>
+      <div class="title">Arora Family Calendar</div>
+      <div class="titleIcon" aria-hidden="true" id="omIcon"></div>
+    </div>
     <div class="dt">
       <div id="time"></div>
       <div id="date"></div>
@@ -138,8 +165,20 @@ html,body{
 
   <div class="main">
     <div class="left">
-      <div class="card photoBox">
-        <img id="photo">
+
+      <!-- Photos: prefer the full Google Photos album embed.
+           If it fails to render (rare/CORS/network), we fall back to rotating URLs. -->
+      <div class="card albumFrame" id="albumCard">
+        <div class="pa-gallery-player-widget"
+          data-link="https://photos.app.goo.gl/otWcjpGaxr4pREjc8"
+          data-title="Niya and Jaiden · May 2, 2006 – Jan 19, 2026 📸"
+          data-description="Shared album · Tap to view!">
+        </div>
+      </div>
+
+      <div class="card photoBox" id="fallbackPhotoCard" style="display:none;">
+        <img id="photo" alt="Family photo">
+        <div class="fallbackNote" id="fallbackNote">Album embed didn’t load — showing fallback photos.</div>
       </div>
 
       <div class="card" id="weather">
@@ -151,7 +190,7 @@ html,body{
             <div class="wxCond" id="wxCond">Loading…</div>
           </div>
         </div>
-        <div id="forecast"></div>
+        <div class="forecastRow" id="forecast"></div>
       </div>
     </div>
 
@@ -172,87 +211,122 @@ function tick(){
 }
 setInterval(tick,1000); tick();
 
-/* === PHOTOS (30 REAL GOOGLE URLS) === */
+/* SIMPLE INLINE SVG ICONS (clean outlines) */
+function setSVG(el, svg){ document.getElementById(el).innerHTML = svg; }
+
+setSVG("omIcon", `
+<svg viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-label="Om">
+  <!-- Simplified Om-inspired outline (original drawing) -->
+  <path d="M18 28c0-8 6-14 14-14s14 6 14 14c0 6-3 10-8 12"/>
+  <path d="M20 42c2 6 8 10 16 10 10 0 18-7 18-16 0-7-4-12-11-13"/>
+  <path d="M12 36c0 8 6 14 14 14"/>
+  <path d="M44 14c3 0 6-3 6-6"/>
+  <path d="M50 10c0 4 3 7 7 7"/>
+</svg>
+`);
+
+setSVG("ganeshIcon", `
+<svg viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-label="Ganesha">
+  <!-- Minimal, original Ganesha-inspired outline: head + trunk + ears -->
+  <path d="M22 26c0-8 6-14 10-14s10 6 10 14"/>
+  <path d="M18 30c-4 2-6 6-6 10 0 6 4 10 10 10"/>
+  <path d="M46 30c4 2 6 6 6 10 0 6-4 10-10 10"/>
+  <path d="M32 24c-4 4-6 9-6 14 0 8 6 14 14 14"/>
+  <path d="M26 38c3 0 6-2 6-5"/>
+  <path d="M40 41c-3 0-6-2-6-5"/>
+</svg>
+`);
+
+/* === PHOTOS FALLBACK (kept small + stable) === */
 const PHOTOS = [
   "https://lh3.googleusercontent.com/pw/AP1GczMFOZiZY5KWQ0C4v_fWvoR426w-Ng62oW-6FdufWtkhTlqdsuKafakw8HDu2JfsMkmyDEIGMGWuIvte0b6ug8CFRo_AKocvBkCCNGSeOt8Kru8PQBIe=w1920-h1080",
   "https://lh3.googleusercontent.com/pw/AP1GczPbpkO8cblmAmozt0Ltf9-Tuwdm9u_H-Qs1rcRaQMP5eZVz-PiIJvWhOtlw_UHkGbaVLMaoWR1UG4KhghxJtbhY-NgJ931Zl4ym9i6c70CPPbKWbelQ=w1920-h1080",
   "https://lh3.googleusercontent.com/pw/AP1GczOw8rp5nMwHPy5HLTFjjdrepp4VV_1pZM1NU4l0GqrnlTznFxodpK7_Y9qckJP_Ri7Ln7zUQxAFpp0RYED19Tmtu39AVwtPSFEyTeq2hsvHPykpiJLw=w1920-h1080",
   "https://lh3.googleusercontent.com/pw/AP1GczMRFjpACkHORYLnJJ9loz4pK6ylRWYE83dPZYiWXOo5SYwfhY3yqxJsX8kAeAGayUFatTK9aPaSehfW1sg98ajMryGtNhV3wVsjDDP6D1FD6MDqkz1h=w1920-h1080",
   "https://lh3.googleusercontent.com/pw/AP1GczMrtmdZ3RInAI5viTGOOdFbiBNqMmdP3eYr4ZQRvfhTqGn-x9xtYciFPKQlacNTaWeUmyZ_rntwYs5-fuQ_0uKmOzQDyYlPmoN0gdqpaXeTBZuhI8bP=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczN8AEHTVEkTNfOCc7WgMCFDQkqMyUGADwMdSz_Ks7SWCntJio0XG98ZJibZoTH3D6PBo639KSNSyw6j66SgYof5Pv6zYXDxrSZkY0YrMbZF_GoNqXVN=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczMutK4oW62KzUIQFAiQJyiz5IthQDZGmW4mlTDF-FEqWOvt8ilMre4cVxhLbjWpb9NZZ5FhpKDO9-zHB700NKSU3EN0cGfSCvZnqXVoPEIka7WsfRg9=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczOMM_mP1UZYEjWPe7wle2c1LP2qGUeP-cdS2U9gFZ88Cjqfi0HbT4Lelxlj-xoI74hZRLSbXv1uTBpA8tEDyUFE-l_isY2mn9-Tbr1jQuJbA919-5we=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczMP6cnoE9dP3VRRmp4UPtU9JYeOMJ1ezWxXlVKkO9gd2SjWwPMr83hQ5GFx4JwVTKLFSFlFYzgvEMqyp7G5xzKlJhoh6NMFuGjJdR5_y7Yr5DUH3sIo=w1920-h1080",
-  "https://lh3.googleusercontent.com/pw/AP1GczOsmDm8_hgsVSPk2--GbXfzyK9jH_S4KZeSUS6S8056zLaH-O89PA42XcDAD2s9JM3t_FjkktEF4Ksz6B9Ai8nUWT6CtI40_S5ey9LG4Uo4iQuuXclg=w1920-h1080"
-  // trimmed to 30 previously validated URLs for stability
+  "https://lh3.googleusercontent.com/pw/AP1GczN8AEHTVEkTNfOCc7WgMCFDQkqMyUGADwMdSz_Ks7SWCntJio0XG98ZJibZoTH3D6PBo639KSNSyw6j66SgYof5Pv6zYXDxrSZkY0YrMbZF_GoNqXVN=w1920-h1080"
 ];
 
 let p=0;
 const img=document.getElementById('photo');
 
-function showNext(){
-  const url=PHOTOS[p % PHOTOS.length];
-  const pre=new Image();
-  pre.onload=()=>img.src=url;
-  pre.onerror=()=>{};
-  pre.src=url;
-  p++;
-}
-showNext();
-setInterval(showNext,8000);
+function startFallbackPhotos(){
+  document.getElementById('albumCard').style.display='none';
+  document.getElementById('fallbackPhotoCard').style.display='block';
+  document.getElementById('fallbackNote').style.display='block';
 
-/* === WEATHER (SVG + °F, 5-DAY IN A ROW) === */
-function sunSVG(size=44){
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+  function showNext(){
+    const url=PHOTOS[p % PHOTOS.length];
+    const pre=new Image();
+    pre.onload=()=>img.src=url;
+    pre.onerror=()=>{};
+    pre.src=url;
+    p++;
+  }
+  showNext();
+  setInterval(showNext,8000);
+}
+
+/* If the album widget is still empty after a few seconds, use fallback photos */
+setTimeout(()=>{
+  const album=document.querySelector('.pa-gallery-player-widget');
+  const hasContent = album && album.querySelector('img, iframe, video, canvas, .pa-image, .pa-gallery');
+  if(!hasContent){ startFallbackPhotos(); }
+}, 4500);
+
+/* === WEATHER (SVG + °F, 5-day row) === */
+function iconSVG(kind){
+  if(kind==="sun") return `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
     <circle cx="12" cy="12" r="4"/>
     <path d="M12 2v3M12 19v3M4 12h3M17 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
   </svg>`;
-}
-function cloudSVG(size=44){
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+  if(kind==="rain") return `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <path d="M7 15h10a4 4 0 0 0 .7-7.94A6 6 0 0 0 6.2 9.2 3.5 3.5 0 0 0 7 15Z"/>
+    <path d="M9 18l-1 3M13 18l-1 3M17 18l-1 3"/>
+  </svg>`;
+  if(kind==="storm") return `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 14h10a4 4 0 0 0 .7-7.94A6 6 0 0 0 6.2 8.2 3.5 3.5 0 0 0 7 14Z"/>
+    <path d="M13 13l-3 5h3l-2 4"/>
+  </svg>`;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
     <path d="M7 18h10a4 4 0 0 0 .7-7.94A6 6 0 0 0 6.2 12.2 3.5 3.5 0 0 0 7 18Z"/>
   </svg>`;
 }
-function rainSVG(size=44){
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-    <path d="M7 15h10a4 4 0 0 0 .7-7.94A6 6 0 0 0 6.2 9.2 3.5 3.5 0 0 0 7 15Z"/>
-    <path d="M8 17l-1 3M12 17l-1 3M16 17l-1 3"/>
-  </svg>`;
-}
-function svgForCode(code, size){
-  if (code === 0) return sunSVG(size);
-  if (code <= 3) return cloudSVG(size);
-  if ([51,53,55,61,63,65,80,81,82].includes(code)) return rainSVG(size);
-  return cloudSVG(size);
+
+/* Very small mapping from Open-Meteo weather codes to icons/labels */
+function codeToKind(code){
+  if(code===0) return ["sun","Clear"];
+  if([1,2,3].includes(code)) return ["cloud","Partly cloudy"];
+  if([45,48].includes(code)) return ["cloud","Fog"];
+  if([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code)) return ["rain","Rain"];
+  if([71,73,75,77,85,86].includes(code)) return ["cloud","Snow"];
+  if([95,96,99].includes(code)) return ["storm","Storm"];
+  return ["cloud","Cloudy"];
 }
 
 fetch("https://api.open-meteo.com/v1/forecast?latitude=29.7604&longitude=-95.3698&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=America/Chicago")
 .then(r=>r.json())
 .then(d=>{
+  const [kind,label]=codeToKind(d.current.weather_code);
   wxTemp.textContent=Math.round(d.current.temperature_2m)+"°F";
-  wxCond.textContent=(d.current.weather_code===0?"Clear":"Cloudy");
-  wxIcon.innerHTML=svgForCode(d.current.weather_code,44);
+  wxCond.textContent=label;
+  wxIcon.innerHTML=iconSVG(kind);
 
-  let html = `<div class="forecastRow">`;
+  let html="";
   for(let i=0;i<5;i++){
-    const dow = new Date(d.daily.time[i]).toLocaleDateString([], {weekday:'short'});
-    const hi = Math.round(d.daily.temperature_2m_max[i]);
-    const lo = Math.round(d.daily.temperature_2m_min[i]);
-    html += `
-      <div class="forecastDay">
-        <div class="dow">${dow}</div>
-        <div class="icon">${svgForCode(d.daily.weather_code[i],26)}</div>
-        <div class="temps">${hi}° / ${lo}°</div>
-      </div>
-    `;
+    const [dkind,_]=codeToKind(d.daily.weather_code[i]);
+    const day=new Date(d.daily.time[i]).toLocaleDateString([], {weekday:'short'});
+    html+=`<div class="dayCard">
+      <div class="dayName">${day}</div>
+      <div class="dayIcon">${iconSVG(dkind)}</div>
+      <div class="dayTemps">${Math.round(d.daily.temperature_2m_max[i])}° / ${Math.round(d.daily.temperature_2m_min[i])}°</div>
+    </div>`;
   }
-  html += `</div>`;
-  forecast.innerHTML = html;
+  forecast.innerHTML=html;
+})
+.catch(()=>{
+  wxCond.textContent="Weather unavailable";
 });
 </script>
 </body>
-</html>
-    
-  </body>
-  
 </html>
