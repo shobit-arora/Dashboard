@@ -5,67 +5,68 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Arora Family Calendar</title>
 
+<!-- Reduce indexing (note: does NOT make the site private) -->
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,max-image-preview:none">
+<meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,max-image-preview:none">
+
+<!-- Warm-but-contemporary title font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
 
 <style>
 html,body{
-  margin:0;
-  height:100%;
-  overflow:hidden;
-  background:#0b0f17;
-  color:#fff;
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-}
+  margin:0; height:100%;
+  background:#0b0f17; color:#fff;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
 
+  overflow:hidden;
+}
 .wrap{
   height:100vh;
-  padding:16px;
+  padding:12px;
   box-sizing:border-box;
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:10px;
+  overflow:hidden;
 }
-
 .header{
   background:#111827;
   border-radius:16px;
-  padding:12px 20px;
+  padding:14px 16px;
 }
-
+.titleRow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+}
 .title{
-  font-family:Fraunces,serif;
+  text-align:center;
   font-size:30px;
   font-weight:800;
-  text-align:center;
-  letter-spacing:.3px;
+  font-family:"Fraunces", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  letter-spacing:.2px;
 }
-
-.dtRow{
-  margin-top:8px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  align-items:center;
-}
-
-.dtCell{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-}
-
-.dtCell img{
+.titleIcon{
+  width:40px;
   height:40px;
-  opacity:.9;
+  opacity:.95;
 }
-
-.time,.date{
-  font-size:20px;
+.titleIcon img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  filter:brightness(1.1);
+}
+.dt{
+  display:flex;
+  justify-content:space-between;
+  font-size:clamp(18px, 2.2vw, 24px);
   font-weight:700;
+  margin-top:6px;
 }
-
 .main{
   flex:1;
   display:grid;
@@ -73,90 +74,75 @@ html,body{
   gap:12px;
   min-height:0;
 }
+.left,.right{min-height:0;}
 
-.left{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
+.left{display:flex;flex-direction:column;gap:10px;height:100%;}
 .card{
   background:#111827;
   border-radius:16px;
   padding:12px;
+  margin-bottom:0;
 }
-
 .photoBox{
-  height:clamp(220px, 30vh, 320px);
+  height:260px;
   background:#000;
   border-radius:14px;
   overflow:hidden;
+  position:relative;
 }
-
 .photoBox img{
-  width:100%;
-  height:100%;
+  width:100%; height:100%;
   object-fit:cover;
 }
-
-.wxNow{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.wxEmoji{
-  font-size:48px;
-  line-height:1;
-}
-
-.wxTemp{
-  font-size:30px;
-  font-weight:800;
-}
-
-.wxCond{
-  font-size:14px;
-  opacity:.85;
-}
-
-.forecastRow{
-  margin-top:10px;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:8px;
-}
-
-.forecastDay{
-  text-align:center;
-}
-
-.forecastDay .emoji{
-  font-size:32px;
-}
-
-.forecastDay .dow{
-  font-size:12px;
-  font-weight:700;
-}
-
-.forecastDay .temps{
-  font-size:12px;
-  opacity:.9;
-}
-
 .calendar{
   height:100%;
   border-radius:16px;
   overflow:hidden;
 }
-
 .calendar iframe{
-  width:100%;
-  height:100%;
+  width:100%; height:100%;
   border:0;
   filter:invert(1) hue-rotate(180deg) contrast(1.05);
 }
+
+/* Weather */
+.wxNow{
+  display:flex; align-items:center; gap:12px;
+  margin-top:8px;
+}
+.wxIcon{ 
+  font-size:44px;
+  line-height:1;
+}
+.wxTemp{
+  font-size:clamp(22px, 2.8vw, 30px);
+  font-weight:800;
+}
+.wxCond{ font-size:14px; opacity:.85; }
+
+#weather{flex:1;min-height:0;}
+#forecast{margin-top:10px;}
+.wxRange{ font-size:13px; opacity:.85; margin-top:4px; }
+.forecastRow{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+}
+.dayCard{
+  flex:1;
+  background:#0f172a;
+  border-radius:12px;
+  padding:8px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  align-items:center;
+  min-width:0;
+}
+.dow{ font-weight:800; font-size:13px; opacity:.95; }
+.dayIcon{ font-size:24px; line-height:1; }
+.temps{ font-size:13px; opacity:.9; white-space:nowrap; }
+.smallCond{ font-size:11px; opacity:.75; text-align:center; }
 </style>
 </head>
 
@@ -164,49 +150,55 @@ html,body{
 <div class="wrap">
 
   <div class="header">
-    <div class="title">The Arora Family</div>
-    <div class="dtRow">
-      <div class="dtCell">
-        <img src="om 1.png" alt="Om">
-        <div class="time" id="time"></div>
+    <div class="titleRow">
+      <div class="titleIcon">
+        <img src="Om 1.jpg" alt="Om" id="omIconLeft">
       </div>
-      <div class="dtCell">
-        <img src="om 1.png" alt="Om">
-        <div class="date" id="date"></div>
+      <div class="title">Arora Family Calendar</div>
+      <div class="titleIcon">
+        <img src="Om 1.jpg" alt="Om" id="omIconRight">
       </div>
+    </div>
+    <div class="dt">
+      <div id="time"></div>
+      <div id="date"></div>
     </div>
   </div>
 
   <div class="main">
     <div class="left">
 
+      <!-- Family Photo -->
       <div class="card photoBox">
-        <img src="family 1.jpg" alt="Family Photo">
+        <img src="Family 1.jpg" alt="Arora Family" style="width:100%;height:100%;object-fit:cover;">
       </div>
 
-      <div class="card">
-        <strong>Houston Weather</strong>
-
+      <div class="card" id="weather">
+        <strong>Houston Weather - Today</strong>
         <div class="wxNow">
-          <div class="wxEmoji" id="wxEmoji">⛅</div>
+          <div id="wxIcon" class="wxIcon"></div>
           <div>
             <div class="wxTemp" id="wxTemp">--°F</div>
             <div class="wxCond" id="wxCond">Loading…</div>
+            <div class="wxRange" id="wxRange"></div>
           </div>
         </div>
-
+        <div style="margin-top:12px;font-size:13px;font-weight:700;opacity:.9;">5-Day Forecast</div>
         <div class="forecastRow" id="forecast"></div>
       </div>
-
     </div>
 
-    <div class="calendar">
+    <div class="right calendar">
       <iframe
         src="https://calendar.google.com/calendar/embed?src=shashilandshobit%40gmail.com&ctz=America%2FChicago&mode=MONTH&showTitle=0&showTabs=0">
       </iframe>
     </div>
   </div>
+</div>
 
+<!-- Version timestamp -->
+<div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#666;">
+  v2025-01-25 1:30 PM
 </div>
 
 <script>
@@ -218,41 +210,127 @@ function tick(){
 }
 setInterval(tick,1000); tick();
 
-/* WEATHER (weather.gov) */
-function emojiFor(text){
-  text=text.toLowerCase();
-  if(text.includes("thunder")) return "⛈️";
-  if(text.includes("snow")) return "❄️";
-  if(text.includes("sleet")||text.includes("ice")) return "🌨️";
-  if(text.includes("rain")||text.includes("showers")) return "🌧️";
-  if(text.includes("fog")) return "🌫️";
-  if(text.includes("wind")) return "💨";
-  if(text.includes("cloud")) return "☁️";
-  if(text.includes("sun")||text.includes("clear")) return "☀️";
-  return "⛅";
+/* === WEATHER (Using National Weather Service API + Weather Emojis) === */
+// ZIP 77055 coordinates
+const LAT = 29.7853;
+const LON = -95.5204;
+
+// Weather condition to emoji mapping
+function getWeatherEmoji(text) {
+  const t = text.toLowerCase();
+  
+  // Thunderstorms
+  if(t.includes('thunder') || t.includes('t-storm')) return '⛈️';
+  
+  // Rain variations
+  if(t.includes('rain') && t.includes('heavy')) return '🌧️';
+  if(t.includes('rain') || t.includes('shower')) return '🌦️';
+  if(t.includes('drizzle')) return '🌦️';
+  
+  // Snow variations
+  if(t.includes('snow') || t.includes('flurries')) return '🌨️';
+  if(t.includes('sleet') || t.includes('wintry mix')) return '🌨️';
+  
+  // Fog and mist
+  if(t.includes('fog') || t.includes('mist')) return '🌫️';
+  
+  // Wind
+  if(t.includes('wind')) return '💨';
+  
+  // Cloud variations
+  if(t.includes('partly cloudy') || t.includes('partly sunny')) return '⛅';
+  if(t.includes('mostly cloudy') || t.includes('cloudy')) return '☁️';
+  if(t.includes('overcast')) return '☁️';
+  
+  // Clear/Sunny
+  if(t.includes('sunny') || t.includes('clear')) return '☀️';
+  if(t.includes('fair')) return '🌤️';
+  
+  // Default
+  return '🌤️';
 }
 
-fetch("https://api.weather.gov/points/29.7604,-95.3698")
-.then(r=>r.json())
-.then(p=>fetch(p.properties.forecast))
-.then(r=>r.json())
-.then(d=>{
-  const periods=d.properties.periods.filter(p=>p.isDaytime).slice(0,5);
-  const now=periods[0];
-  wxTemp.textContent=Math.round(now.temperature)+"°F";
-  wxCond.textContent=now.shortForecast;
-  wxEmoji.textContent=emojiFor(now.shortForecast);
+async function fetchWeather() {
+  try {
+    // Step 1: Get grid coordinates for ZIP 77055
+    const pointRes = await fetch(`https://api.weather.gov/points/${LAT},${LON}`);
+    const pointData = await pointRes.json();
+    
+    // Step 2: Get forecast from grid endpoint
+    const forecastUrl = pointData.properties.forecast;
+    const forecastRes = await fetch(forecastUrl);
+    const forecastData = await forecastRes.json();
+    
+    const periods = forecastData.properties.periods;
+    
+    // Find today's periods (we want the current period)
+    const now = periods[0];
+    
+    // Display current weather
+    wxIcon.textContent = getWeatherEmoji(now.shortForecast);
+    wxTemp.textContent = `${now.temperature}°F`;
+    wxCond.textContent = now.shortForecast;
+    
+    // Get high/low for today
+    let todayHigh = now.temperature;
+    let todayLow = now.temperature;
+    
+    // Check if next period is same day to get both high and low
+    if(periods.length > 1) {
+      const next = periods[1];
+      if(now.isDaytime) {
+        todayLow = next.temperature;
+      } else {
+        todayHigh = next.temperature;
+      }
+    }
+    
+    wxRange.textContent = `High ${todayHigh}° • Low ${todayLow}°`;
+    
+    // Build 5-day forecast (skip today, show next 5 days)
+    let html = "";
+    const seenDays = new Set();
+    let daysAdded = 0;
+    
+    for(let i = 2; i < periods.length && daysAdded < 5; i++) {
+      const p = periods[i];
+      const date = new Date(p.startTime);
+      const dayKey = date.toDateString();
+      
+      // Only show daytime periods and unique days
+      if(p.isDaytime && !seenDays.has(dayKey)) {
+        seenDays.add(dayKey);
+        
+        // Get the night temp (next period after daytime)
+        let lowTemp = p.temperature;
+        if(i + 1 < periods.length) {
+          lowTemp = periods[i + 1].temperature;
+        }
+        
+        html += `<div class="dayCard">
+          <div class="dow">${date.toLocaleDateString([], {weekday:'short'})}</div>
+          <div class="dayIcon">${getWeatherEmoji(p.shortForecast)}</div>
+          <div class="temps">${p.temperature}° / ${lowTemp}°</div>
+          <div class="smallCond">${p.shortForecast}</div>
+        </div>`;
+        
+        daysAdded++;
+      }
+    }
+    
+    forecast.innerHTML = html;
+    
+  } catch(err) {
+    console.error('Weather fetch error:', err);
+    wxTemp.textContent = "--°F";
+    wxCond.textContent = "Unable to load weather";
+    wxIcon.textContent = "🌤️";
+  }
+}
 
-  let html="";
-  periods.forEach(p=>{
-    html+=`<div class="forecastDay">
-      <div class="dow">${p.name}</div>
-      <div class="emoji">${emojiFor(p.shortForecast)}</div>
-      <div class="temps">${p.temperature}°</div>
-    </div>`;
-  });
-  forecast.innerHTML=html;
-});
+fetchWeather();
+// Refresh weather every 30 minutes
+setInterval(fetchWeather, 30 * 60 * 1000);
 </script>
 </body>
 </html>
