@@ -27,9 +27,9 @@ html,body{
 .header{
   background:#111827;
   border-radius:16px;
-  padding:14px 20px;
+  padding:14px 16px;
   display:grid;
-  grid-template-columns:auto 1fr auto;
+  grid-template-columns: 1fr auto 1fr;
   align-items:center;
 }
 
@@ -38,22 +38,17 @@ html,body{
   opacity:0.9;
 }
 
+.hdrCol{display:flex; flex-direction:column; gap:6px;}
+.hdrLeft{align-items:flex-start;}
+.hdrRight{align-items:flex-end;}
+.omTop{height:34px; width:auto; opacity:.95;}
+.time,.date{font-size:22px; font-weight:800; line-height:1;}
 .titleBlock{
   text-align:center;
 }
 
-.title{
-  font-size:28px;
-  font-weight:800;
-}
+.title{ text-align:center; font-size:30px; font-weight:850; letter-spacing:.2px; }
 
-.dt{
-  display:flex;
-  justify-content:space-between;
-  font-size:20px;
-  font-weight:700;
-  margin-top:6px;
-}
 
 .main{
   flex:1;
@@ -141,17 +136,22 @@ html,body{
 <body>
 <div class="wrap">
 
-  <div class="header">
-    <img src="om 1.png" alt="Om left">
-    <div class="titleBlock">
-      <div class="title">Arora Family Calendar</div>
-      <div class="dt">
-        <div id="time"></div>
-        <div id="date"></div>
-      </div>
+    <div class="header">
+    <div class="hdrCol hdrLeft">
+      <img class="omTop" src="om 1.png" alt="Om">
+      <div id="time" class="time"></div>
     </div>
-    <img src="om 1.png" alt="Om right">
+
+    <div class="hdrCenter">
+      <div class="title">Arora Family Calendar</div>
+    </div>
+
+    <div class="hdrCol hdrRight">
+      <img class="omTop" src="om 1.png" alt="Om">
+      <div id="date" class="date"></div>
+    </div>
   </div>
+
 
   <div class="main">
     <div class="left">
@@ -195,21 +195,17 @@ function tick(){
 setInterval(tick,1000); tick();
 
 /* PHOTOS */
-const PHOTOS=[
-  "https://picsum.photos/1600/900?1",
-  "https://picsum.photos/1600/900?2",
-  "https://picsum.photos/1600/900?3",
-  "https://picsum.photos/1600/900?4",
-  "https://picsum.photos/1600/900?5"
-];
+const img = document.getElementById('photo');
 
-let p=0;
-function showNext(){
-  photo.src=PHOTOS[p%PHOTOS.length];
-  p++;
+/* Use ONE local family photo from your GitHub repo (no album carousel).
+   Expected file name: "family 1.jpg" (same folder as this HTML). */
+function setFamilyPhoto(){
+  const primary = "family%201.jpg";   // "family 1.jpg"
+  const fallback = "family%201.png";  // if you used PNG instead
+  img.onerror = ()=>{ img.src = fallback; };
+  img.src = primary;
 }
-showNext();
-setInterval(showNext,8000);
+setFamilyPhoto();
 
 /* WEATHER (weather.gov via api.weather.gov) + 6hr auto refresh */
 setTimeout(()=>location.reload(), 6*60*60*1000);
@@ -257,27 +253,24 @@ function svgFog(){return `<svg viewBox="0 0 24 24" fill="none" stroke="white" st
   <path d="M4 16h16M6 19h12"/>
 </svg>`;}
 
-function iconFromText(txt, isDay=true){
-  const t=(txt||"").toLowerCase();
-  const thunder = t.includes("thunder");
-  const snow = t.includes("snow") || t.includes("blizzard");
-  const sleet = t.includes("sleet") || t.includes("ice") || t.includes("freezing") || t.includes("hail");
-  const rain = t.includes("rain") || t.includes("shower") || t.includes("drizzle");
-  const fog = t.includes("fog") || t.includes("haze") || t.includes("smoke") || t.includes("mist");
-  const wind = t.includes("wind") || t.includes("breezy") || t.includes("gust");
-  const overcast = t.includes("overcast");
-  const cloudy = t.includes("cloud");
-  const partly = t.includes("partly") || t.includes("mostly sunny") || t.includes("mostly clear");
-
-  if(thunder) return svgStorm();
-  if(snow) return svgSnow();
-  if(sleet) return svgSleet();
-  if(rain) return svgRain();
-  if(fog) return svgFog();
-  if(wind && !rain && !snow && !sleet) return svgWind();
-  if(partly) return svgPartly();
-  if(overcast || cloudy) return svgCloud();
-  return isDay ? svgSun() : svgMoon();
+function iconEmoji(text,isDay=true){
+  const t=(text||"").toLowerCase();
+  if(t.includes("thunder")) return "⛈️";
+  if(t.includes("t-storm")) return "⛈️";
+  if(t.includes("snow")) return "❄️";
+  if(t.includes("sleet") || t.includes("ice") || t.includes("freezing") || t.includes("wintry")) return "🧊";
+  if(t.includes("hail")) return "🧊";
+  if(t.includes("rain") || t.includes("shower")) return "🌧️";
+  if(t.includes("drizzle")) return "🌦️";
+  if(t.includes("fog") || t.includes("haze") || t.includes("smoke") || t.includes("mist")) return "🌫️";
+  if(t.includes("wind")) return "💨";
+  if(t.includes("partly") || t.includes("mostly sunny")) return "⛅";
+  if(t.includes("cloud")) return "☁️";
+  if(t.includes("clear") || t.includes("sunny")) return isDay ? "☀️" : "🌙";
+  return "☁️";
+}
+function iconFromText(text,isDay=true){
+  return `<span class="emojiIcon">${iconEmoji(text,isDay)}</span>`;
 }
 
 function renderForecastCards(dayCards){
