@@ -314,7 +314,7 @@ html, body {
 
 <!-- Version timestamp -->
 <div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#666;">
-  v2025-01-25 6:00 PM
+  v2025-01-25 6:05 PM
 </div>
 
 <script>
@@ -391,7 +391,11 @@ async function fetchWeather() {
     // Next 5 days forecast (skip today at index 0, show days 1-5)
     let html = "";
     for (let i = 1; i <= 5; i++) {
-      const date = new Date(today.time[i]);
+      // Parse date safely to avoid timezone issues
+      const dateStr = today.time[i];
+      const [year, month, day] = dateStr.split('-').map(Number);
+      const date = new Date(year, month - 1, day); // Use local timezone
+      
       const dayName = date.toLocaleDateString([], {weekday: 'short'});
       const emoji = getWeatherEmoji(today.weather_code[i], true);
       const desc = getWeatherDescription(today.weather_code[i]);
