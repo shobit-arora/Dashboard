@@ -1,0 +1,530 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arora Family Calendar</title>
+
+<!-- Reduce indexing (note: does NOT make the site private) -->
+
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,max-image-preview:none">
+<meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,max-image-preview:none">
+
+<!-- Auto-refresh every 6 hours -->
+
+<meta http-equiv="refresh" content="21600">
+
+<!-- Warm-but-contemporary title font -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0b0f17;
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+/* Responsive container optimized for 42" 4K TV but scales for all screens */
+.wrap {
+  width: 100vw;
+  height: 100vh;
+  padding: min(1.5vh, 1.5vw);
+  display: flex;
+  flex-direction: column;
+  gap: min(1.2vh, 1vw);
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, #1a3a2e 0%, #234d3f 25%, #2d6a4f 50%, #234d3f 75%, #1a3a2e 100%);
+  background-size: 400% 400%;
+  animation: metallicShine 8s ease infinite;
+  border-radius: min(2vh, 1.5vw);
+  padding: min(1.5vh, 1.2vw) min(2vh, 1.8vw);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes metallicShine {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.headerLeft, .headerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: min(1vh, 0.8vw);
+  width: min(15vw, 140px);
+}
+
+.titleIcon {
+  width: min(8vh, 7vw);
+  height: min(8vh, 7vw);
+  max-width: 90px;
+  max-height: 90px;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6)) 
+          drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+}
+
+.titleIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(1.1);
+}
+
+.timeDisplay {
+  font-size: min(2.5vh, 2vw);
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.dadJoke {
+  text-align: center;
+  font-size: min(3.2vh, 2.5vw);
+  font-weight: 700;
+  font-family: "Fraunces", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  letter-spacing: 0.2px;
+  flex: 1;
+  padding: 0 min(2vw, 20px);
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.familyName {
+  position: absolute;
+  bottom: min(1.5vh, 1.2vw);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: min(1.8vh, 1.4vw);
+  opacity: 0.6;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 24% 76%;
+  gap: min(1.2vh, 1vw);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.left, .right {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: min(1.2vh, 1vw);
+  height: 100%;
+}
+
+.card {
+  background: linear-gradient(135deg, #1a3a2e 0%, #234d3f 25%, #2d6a4f 50%, #234d3f 75%, #1a3a2e 100%);
+  background-size: 400% 400%;
+  animation: metallicShine 8s ease infinite;
+  border-radius: min(2vh, 1.5vw);
+  padding: min(1.5vh, 1.2vw);
+  margin-bottom: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.photoBox {
+  flex-shrink: 0;
+  height: min(22vh, 20vw);
+  background: #000;
+  border-radius: min(1.8vh, 1.3vw);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.photoBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.calendar {
+  height: 100%;
+  border-radius: min(2vh, 1.5vw);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.calendar iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: invert(1) hue-rotate(180deg) contrast(1.05);
+  transform: scale(0.85);
+  transform-origin: top left;
+  width: 117.65%;
+  height: 117.65%;
+}
+
+/* Weather */
+#weather {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.wxNow {
+  display: flex;
+  align-items: flex-start;
+  gap: min(1.5vh, 1.2vw);
+  margin-top: min(1vh, 0.8vw);
+}
+
+.wxIcon {
+  font-size: min(5.5vh, 4.5vw);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.wxDetails {
+  display: flex;
+  flex-direction: column;
+  gap: min(0.4vh, 0.3vw);
+  flex: 1;
+}
+
+.wxTemp {
+  font-size: min(3.5vh, 2.8vw);
+  font-weight: 800;
+}
+
+.wxCond {
+  font-size: min(1.8vh, 1.4vw);
+  opacity: 0.85;
+  line-height: 1.3;
+}
+
+.wxRange {
+  font-size: min(1.6vh, 1.3vw);
+  opacity: 0.85;
+}
+
+.forecastLabel {
+  margin-top: min(1.5vh, 1.2vw);
+  font-size: min(1.8vh, 1.4vw);
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.forecastRow {
+  margin-top: min(1.2vh, 1vw);
+  display: flex;
+  gap: min(1vh, 0.8vw);
+  flex: 1;
+  min-height: 0;
+}
+
+.dayCard {
+  flex: 1;
+  background: linear-gradient(135deg, #152e26 0%, #1a3830 50%, #152e26 100%);
+  border-radius: min(1.5vh, 1.2vw);
+  padding: min(1vh, 0.8vw);
+  display: flex;
+  flex-direction: column;
+  gap: min(0.6vh, 0.5vw);
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.dow {
+  font-weight: 800;
+  font-size: min(2.2vh, 1.7vw);
+  opacity: 0.95;
+  flex-shrink: 0;
+}
+
+.dayIcon {
+  font-size: min(4vh, 3.2vw);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.temps {
+  font-size: min(2vh, 1.6vw);
+  opacity: 0.9;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.smallCond {
+  font-size: min(1.8vh, 1.4vw);
+  opacity: 0.75;
+  text-align: center;
+  line-height: 1.2;
+  min-height: min(4vh, 3.2vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 1024px) or (max-height: 768px) {
+  .wrap {
+    padding: 8px;
+    gap: 8px;
+  }
+  .dadJoke {
+    font-size: 16px;
+  }
+  .timeDisplay {
+    font-size: 14px;
+  }
+}
+</style>
+
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="headerLeft">
+      <div class="titleIcon">
+        <img src="om 1.png" alt="Om">
+      </div>
+      <div class="timeDisplay" id="time"></div>
+    </div>
+
+```
+<div class="dadJoke" id="dadJoke">Loading a smile...</div>
+
+<div class="headerRight">
+  <div class="titleIcon">
+    <img src="om 1.png" alt="Om">
+  </div>
+  <div class="timeDisplay" id="date"></div>
+</div>
+```
+
+  </div>
+
+  <div class="main">
+    <div class="left">
+
+```
+  <!-- Family Photo -->
+  <div class="card photoBox">
+    <img src="Family 1.jpg" alt="Arora Family">
+  </div>
+
+  <div class="card" id="weather">
+    <strong class="forecastLabel">Current Weather @ Bellewood</strong>
+    <div class="wxNow">
+      <div id="wxIcon" class="wxIcon"></div>
+      <div class="wxDetails">
+        <div class="wxTemp" id="wxTemp">--°F</div>
+        <div class="wxRange" id="wxRange"></div>
+        <div class="wxCond" id="wxCond">Loading…</div>
+      </div>
+    </div>
+    <div class="forecastLabel">Next 5 Days</div>
+    <div class="forecastRow" id="forecast"></div>
+  </div>
+</div>
+
+<div class="right calendar">
+  <div class="familyName">Arora Family Calendar</div>
+  <iframe
+    src="https://calendar.google.com/calendar/embed?src=shashilandshobit%40gmail.com&ctz=America%2FChicago&mode=MONTH&showTitle=0&showTabs=0">
+  </iframe>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- Version timestamp -->
+
+<div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#fff;">
+  v2025-01-25 7:45 PM
+</div>
+
+<script>
+/* AUTO-REFRESH: Also refresh via JavaScript as backup (every 6 hours) */
+setTimeout(() => location.reload(), 6 * 60 * 60 * 1000);
+
+/* CLOCK */
+function tick(){
+  const now = new Date();
+  time.textContent = now.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+  date.textContent = now.toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'});
+}
+setInterval(tick, 1000); 
+tick();
+
+/* DAD JOKE GENERATOR */
+const dadJokes = [
+  "Why don't scientists trust atoms? Because they make up everything!",
+  "I used to hate facial hair, but then it grew on me.",
+  "Why do fathers take an extra pair of socks to golf? In case they get a hole in one!",
+  "What do you call a fake noodle? An impasta!",
+  "I'm reading a book about anti-gravity. It's impossible to put down!",
+  "Why did the scarecrow win an award? He was outstanding in his field!",
+  "What do you call a bear with no teeth? A gummy bear!",
+  "How do you organize a space party? You planet!",
+  "Why don't eggs tell jokes? They'd crack each other up!",
+  "What did the ocean say to the beach? Nothing, it just waved!",
+  "Why did the bicycle fall over? It was two tired!",
+  "What do you call cheese that isn't yours? Nacho cheese!",
+  "Why can't you hear a pterodactyl using the bathroom? Because the P is silent!",
+  "What did one wall say to the other? I'll meet you at the corner!",
+  "How does a penguin build its house? Igloos it together!",
+  "Why did the math book look sad? It had too many problems!",
+  "What do you call a fish with no eyes? Fsh!",
+  "Why don't skeletons fight each other? They don't have the guts!",
+  "What's orange and sounds like a parrot? A carrot!",
+  "Why did the cookie go to the doctor? It felt crumbly!",
+  "How do you make a tissue dance? Put a little boogie in it!",
+  "What did the grape do when it got stepped on? Nothing, it just let out a little wine!",
+  "Why did the golfer bring two pairs of pants? In case he got a hole in one!",
+  "What do you call a sleeping bull? A bulldozer!",
+  "Why don't oysters donate to charity? Because they're shellfish!"
+];
+
+let currentJoke = 0;
+
+function displayDadJoke() {
+  currentJoke = Math.floor(Math.random() * dadJokes.length);
+  document.getElementById('dadJoke').textContent = dadJokes[currentJoke];
+}
+
+displayDadJoke();
+// Change joke every hour
+setInterval(displayDadJoke, 60 * 60 * 1000);
+
+/* === WEATHER (Using Open-Meteo API for most accurate real-time data) === */
+// ZIP 77055 coordinates (Houston, TX)
+const LAT = 29.7853;
+const LON = -95.5204;
+
+// Weather condition to emoji mapping
+function getWeatherEmoji(code, isDay) {
+  // WMO Weather interpretation codes
+  // https://open-meteo.com/en/docs
+  if (code === 0) return isDay ? '☀️' : '🌙';
+  if ([1, 2].includes(code)) return isDay ? '🌤️' : '🌙';
+  if (code === 3) return '☁️';
+  if ([45, 48].includes(code)) return '🌫️';
+  if ([51, 53, 55, 56, 57].includes(code)) return '🌦️';
+  if ([61, 63, 65, 66, 67].includes(code)) return '🌧️';
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return '🌨️';
+  if ([80, 81, 82].includes(code)) return '🌦️';
+  if ([95, 96, 99].includes(code)) return '⛈️';
+  return '🌤️';
+}
+
+function getWeatherDescription(code) {
+  if (code === 0) return 'Clear';
+  if (code === 1) return 'Mostly Clear';
+  if (code === 2) return 'Partly Cloudy';
+  if (code === 3) return 'Overcast';
+  if ([45, 48].includes(code)) return 'Foggy';
+  if ([51, 53, 55].includes(code)) return 'Drizzle';
+  if ([56, 57].includes(code)) return 'Freezing Drizzle';
+  if ([61, 63].includes(code)) return 'Light Rain';
+  if (code === 65) return 'Heavy Rain';
+  if ([66, 67].includes(code)) return 'Freezing Rain';
+  if ([71, 73, 75, 77].includes(code)) return 'Snow';
+  if ([80, 81, 82].includes(code)) return 'Rain Showers';
+  if ([85, 86].includes(code)) return 'Snow Showers';
+  if (code === 95) return 'Thunderstorm';
+  if ([96, 99].includes(code)) return 'Thunderstorm';
+  return 'Clear';
+}
+
+async function fetchWeather() {
+  try {
+    // Open-Meteo API - uses actual weather station data and multiple national weather services
+    // Most accurate for real-time conditions
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=America/Chicago&forecast_days=7`;
+    
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    // Current weather
+    const current = data.current;
+    const today = data.daily;
+    
+    wxIcon.textContent = getWeatherEmoji(current.weather_code, current.is_day === 1);
+    wxTemp.textContent = `${Math.round(current.temperature_2m)}°F`;
+    wxRange.textContent = `High ${Math.round(today.temperature_2m_max[0])}° • Low ${Math.round(today.temperature_2m_min[0])}°`;
+    wxCond.textContent = getWeatherDescription(current.weather_code);
+    
+    // Next 5 days forecast (skip today at index 0, show days 1-5)
+    let html = "";
+    for (let i = 1; i <= 5; i++) {
+      // Parse date safely to avoid timezone issues
+      const dateStr = today.time[i];
+      const [year, month, day] = dateStr.split('-').map(Number);
+      const date = new Date(year, month - 1, day); // Use local timezone
+      
+      const dayName = date.toLocaleDateString([], {weekday: 'short'});
+      const emoji = getWeatherEmoji(today.weather_code[i], true);
+      const desc = getWeatherDescription(today.weather_code[i]);
+      const high = Math.round(today.temperature_2m_max[i]);
+      const low = Math.round(today.temperature_2m_min[i]);
+      
+      html += `<div class="dayCard">
+        <div class="dow">${dayName}</div>
+        <div class="dayIcon">${emoji}</div>
+        <div class="temps">${high}° / ${low}°</div>
+        <div class="smallCond">${desc}</div>
+      </div>`;
+    }
+    
+    forecast.innerHTML = html;
+    
+  } catch (err) {
+    console.error('Weather fetch error:', err);
+    wxTemp.textContent = "--°F";
+    wxCond.textContent = "Unable to load weather";
+    wxIcon.textContent = "🌤️";
+  }
+}
+
+fetchWeather();
+// Refresh weather every 15 minutes for most current data
+setInterval(fetchWeather, 15 * 60 * 1000);
+</script>
+
+</body>
+</html>
