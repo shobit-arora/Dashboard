@@ -193,10 +193,10 @@ html, body {
   height: 100%;
   border: 0;
   filter: invert(1) hue-rotate(180deg) contrast(1.05);
-  transform: scale(0.85);
+  transform: scale(0.75);
   transform-origin: top left;
-  width: 117.65%;
-  height: 117.65%;
+  width: 133.33%;
+  height: 133.33%;
   margin-top: min(3vh, 2.5vw);
 }
 
@@ -268,9 +268,9 @@ html, body {
   border-radius: min(1.5vh, 1.2vw);
   padding: min(0.8vh, 0.6vw);
   display: grid;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: auto auto auto 1fr;
   gap: min(0.4vh, 0.3vw);
-  align-items: center;
+  align-items: start;
   justify-items: center;
   min-width: 0;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
@@ -304,11 +304,7 @@ html, body {
   line-height: 1.2;
   white-space: normal;
   max-width: 100%;
-  align-self: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: min(3vh, 2.4vw);
+  align-self: start;
 }
 
 /* Media query for smaller screens */
@@ -382,7 +378,7 @@ html, body {
 
 <!-- Version timestamp -->
 <div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#fff;">
-  v2025-01-25 10:10 PM
+  v2025-01-25 10:15 PM
 </div>
 
 <script>
