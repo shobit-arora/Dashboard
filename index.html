@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -7,16 +6,13 @@
 <title>Arora Family Calendar</title>
 
 <!-- Reduce indexing (note: does NOT make the site private) -->
-
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,max-image-preview:none">
 <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,max-image-preview:none">
 
 <!-- Auto-refresh every 6 hours -->
-
 <meta http-equiv="refresh" content="21600">
 
 <!-- Warm-but-contemporary title font -->
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
@@ -116,10 +112,10 @@ html, body {
 
 .familyName {
   position: absolute;
-  top: min(1vh, 0.8vw);
+  top: min(3vh, 2.5vw);
   left: 50%;
   transform: translateX(-50%);
-  font-size: min(2.2vh, 1.8vw);
+  font-size: min(2vh, 1.6vw);
   opacity: 0.5;
   font-weight: 600;
   letter-spacing: 2px;
@@ -165,13 +161,13 @@ html, body {
 .photoBox {
   flex-shrink: 0;
   height: min(22vh, 20vw);
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
+  background: rgba(29, 58, 46, 0.75);
+  backdrop-filter: blur(12px);
   border-radius: min(1.8vh, 1.3vw);
   overflow: hidden;
   position: relative;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(45, 106, 79, 0.2);
+  border: 1px solid rgba(45, 106, 79, 0.3);
 }
 
 .photoBox img {
@@ -196,11 +192,12 @@ html, body {
   width: 100%;
   height: 100%;
   border: 0;
-  filter: invert(1) hue-rotate(180deg) contrast(1.05);
+  filter: invert(1) hue-rotate(180deg) contrast(1.05) brightness(0.95);
   transform: scale(0.85);
   transform-origin: top left;
   width: 117.65%;
   height: 117.65%;
+  margin-top: min(3vh, 2.5vw);
 }
 
 /* Weather */
@@ -281,34 +278,34 @@ html, body {
 
 .dow {
   font-weight: 800;
-  font-size: min(2vh, 1.5vw);
+  font-size: min(1.7vh, 1.3vw);
   opacity: 0.95;
   flex-shrink: 0;
 }
 
 .dayIcon {
-  font-size: min(3.5vh, 2.8vw);
+  font-size: min(3vh, 2.4vw);
   line-height: 1;
   flex-shrink: 0;
   margin: min(0.3vh, 0.2vw) 0;
 }
 
 .temps {
-  font-size: min(1.8vh, 1.4vw);
+  font-size: min(1.5vh, 1.2vw);
   opacity: 0.9;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .smallCond {
-  font-size: min(1.5vh, 1.2vw);
+  font-size: min(1.3vh, 1vw);
   opacity: 0.75;
   text-align: center;
-  line-height: 1.1;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   max-width: 100%;
-  hyphens: auto;
 }
 
 /* Media query for smaller screens */
@@ -325,7 +322,6 @@ html, body {
   }
 }
 </style>
-
 </head>
 
 <body>
@@ -338,57 +334,50 @@ html, body {
       </div>
       <div class="timeDisplay" id="time"></div>
     </div>
-
-```
-<div class="dadJoke" id="dadJoke">Loading a smile...</div>
-
-<div class="headerRight">
-  <div class="titleIcon">
-    <img src="om 1.png" alt="Om">
-  </div>
-  <div class="timeDisplay" id="date"></div>
-</div>
-```
-
+    
+    <div class="dadJoke" id="dadJoke">Loading a smile...</div>
+    
+    <div class="headerRight">
+      <div class="titleIcon">
+        <img src="om 1.png" alt="Om">
+      </div>
+      <div class="timeDisplay" id="date"></div>
+    </div>
   </div>
 
   <div class="main">
     <div class="left">
 
-```
-  <!-- Family Photo -->
-  <div class="card photoBox">
-    <img src="Family 1.jpg" alt="Arora Family">
-  </div>
+      <!-- Family Photo -->
+      <div class="card photoBox">
+        <img src="Family 1.jpg" alt="Arora Family">
+      </div>
 
-  <div class="card" id="weather">
-    <strong class="forecastLabel">Current Weather @ Bellewood</strong>
-    <div class="wxNow">
-      <div id="wxIcon" class="wxIcon"></div>
-      <div class="wxDetails">
-        <div class="wxTemp" id="wxTemp">--°F</div>
-        <div class="wxRange" id="wxRange"></div>
-        <div class="wxCond" id="wxCond">Loading…</div>
+      <div class="card" id="weather">
+        <strong class="forecastLabel">Current Weather @ Bellewood</strong>
+        <div class="wxNow">
+          <div id="wxIcon" class="wxIcon"></div>
+          <div class="wxDetails">
+            <div class="wxTemp" id="wxTemp">--°F</div>
+            <div class="wxRange" id="wxRange"></div>
+            <div class="wxCond" id="wxCond">Loading…</div>
+          </div>
+        </div>
+        <div class="forecastLabel">Next 5 Days</div>
+        <div class="forecastRow" id="forecast"></div>
       </div>
     </div>
-    <div class="forecastLabel">Next 5 Days</div>
-    <div class="forecastRow" id="forecast"></div>
-  </div>
-</div>
 
-<div class="right calendar">
-  <div class="familyName">Arora Family Calendar</div>
-  <iframe
-    src="https://calendar.google.com/calendar/embed?src=shashilandshobit%40gmail.com&ctz=America%2FChicago&mode=MONTH&showTitle=0&showTabs=0">
-  </iframe>
-</div>
-```
-
+    <div class="right calendar">
+      <div class="familyName">Arora Family Calendar</div>
+      <iframe
+        src="https://calendar.google.com/calendar/embed?src=shashilandshobit%40gmail.com&ctz=America%2FChicago&mode=MONTH&showTitle=0&showTabs=0">
+      </iframe>
+    </div>
   </div>
 </div>
 
 <!-- Version timestamp -->
-
 <div style="position:fixed;bottom:4px;right:8px;font-size:9px;opacity:.25;color:#fff;">
   v2025-01-25 8:30 PM
 </div>
@@ -540,6 +529,5 @@ fetchWeather();
 // Refresh weather every 15 minutes for most current data
 setInterval(fetchWeather, 15 * 60 * 1000);
 </script>
-
 </body>
 </html>
